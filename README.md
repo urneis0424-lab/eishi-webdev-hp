@@ -1,21 +1,127 @@
-```txt
+# WebStudio - Web制作会社ランディングページ
+
+## プロジェクト概要
+- **名前**: WebStudio
+- **目的**: Web制作事業の自社ホームページ
+- **特徴**: 
+  - モダンでプロフェッショナルなデザイン
+  - レスポンシブ対応（スマホ・タブレット・PC）
+  - スムーススクロール機能
+  - 問い合わせフォーム完備
+
+## 完成している機能
+- ✅ ヘッダーナビゲーション（固定）
+- ✅ ヒーローセクション（グラデーション背景）
+- ✅ 選ばれる理由セクション（3つの特徴）
+- ✅ 提供サービスセクション（3つのサービス紹介）
+- ✅ 制作実績セクション（ポートフォリオ表示）
+- ✅ 料金プランセクション（3つのプラン）
+- ✅ よくある質問セクション
+- ✅ お問い合わせフォーム
+- ✅ フッター（会社情報・SNSリンク）
+
+## アクセスURL
+- **開発環境**: https://3000-idvoezt3tptmx2youhdjs-5634da27.sandbox.novita.ai
+- **GitHub**: （未設定）
+- **本番環境**: （未デプロイ）
+
+## 機能URIまとめ
+| URI | 説明 | メソッド |
+|-----|------|---------|
+| `/` | メインランディングページ | GET |
+| `/#features` | 選ばれる理由セクション | - |
+| `/#services` | サービス紹介セクション | - |
+| `/#works` | 制作実績セクション | - |
+| `/#pricing` | 料金プランセクション | - |
+| `/#contact` | お問い合わせフォーム | - |
+
+## 未実装の機能
+- ❌ お問い合わせフォームのバックエンド処理
+- ❌ 実際の画像・コンテンツの差し替え
+- ❌ モバイルメニューの開閉機能
+- ❌ フォームバリデーション
+- ❌ Googleアナリティクス連携
+- ❌ SNSシェア機能
+
+## 推奨される次のステップ
+1. **コンテンツの最適化**
+   - 実際の会社情報に差し替え
+   - 実績写真のアップロード
+   - 料金プランの詳細調整
+
+2. **機能追加**
+   - お問い合わせフォームのAPI実装（メール送信機能）
+   - モバイルメニューの実装
+   - フォームバリデーションの追加
+
+3. **SEO対策**
+   - メタタグの最適化
+   - OGP設定
+   - sitemap.xml生成
+
+4. **デプロイ**
+   - Cloudflare Pagesへのデプロイ
+   - 独自ドメインの設定
+   - SSL証明書の設定
+
+## データ構造
+現在はデータベースを使用していません。静的なランディングページです。
+
+将来的に以下の機能でデータベースが必要になる可能性があります：
+- お問い合わせフォームの送信履歴管理
+- ブログ機能の追加
+- 制作実績の動的管理
+
+## ユーザーガイド
+### サイトの閲覧方法
+1. 上記のアクセスURLにアクセス
+2. トップページが表示されます
+3. ヘッダーメニューまたはCTAボタンから各セクションに移動できます
+
+### お問い合わせ方法
+1. ページ下部のお問い合わせフォームに移動
+2. 必要事項を入力
+3. 「送信する」ボタンをクリック
+   ※現在はバックエンド未実装のため、実際には送信されません
+
+## 技術スタック
+- **フレームワーク**: Hono (Cloudflare Workers対応)
+- **ビルドツール**: Vite
+- **スタイリング**: Tailwind CSS (CDN)
+- **アイコン**: Font Awesome
+- **プロセス管理**: PM2
+
+## デプロイ情報
+- **プラットフォーム**: Cloudflare Pages（準備済み）
+- **ステータス**: 🟡 開発中
+- **最終更新**: 2026-02-12
+
+## ローカル開発
+```bash
+# 依存関係のインストール
 npm install
-npm run dev
+
+# ビルド
+npm run build
+
+# 開発サーバー起動（PM2）
+pm2 start ecosystem.config.cjs
+
+# サービスの確認
+curl http://localhost:3000
+
+# ログ確認
+pm2 logs webapp --nostream
 ```
 
-```txt
-npm run deploy
+## Cloudflare Pagesへのデプロイ手順
+```bash
+# ビルド
+npm run build
+
+# デプロイ
+npm run deploy:prod
 ```
 
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
-
-```txt
-npm run cf-typegen
-```
-
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
-
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
-```
+## ライセンス
+All rights reserved © 2024 WebStudio
