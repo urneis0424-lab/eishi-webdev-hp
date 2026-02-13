@@ -794,9 +794,8 @@ app.get('/', (c) => {
                     </div>
                 </div>
 
-                <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+                <div class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
                     <p>&copy; 2026 Eishi Urano │ Web Developer. All rights reserved.</p>
-                    <p class="mt-2 md:mt-0">Designed with <i class="fas fa-heart text-primary"></i> for freelancers</p>
                 </div>
             </div>
         </footer>
