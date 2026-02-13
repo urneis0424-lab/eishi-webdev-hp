@@ -274,10 +274,10 @@ app.get('/', (c) => {
                             フリーランスならではの柔軟さとスピードで制作します。
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                            <a href="#contact" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2">
+                            <a href="#contact" class="bg-blue-900 hover:bg-blue-800 text-white px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
                                 <i class="fas fa-envelope"></i> 無料相談する
                             </a>
-                            <a href="#works" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition inline-flex items-center justify-center gap-2">
+                            <a href="#works" class="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-primary hover:text-white transition inline-flex items-center justify-center gap-2 shadow-lg">
                                 <i class="fas fa-arrow-right"></i> 実績を見る
                             </a>
                         </div>
