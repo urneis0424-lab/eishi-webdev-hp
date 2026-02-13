@@ -42,9 +42,9 @@ app.get('/', (c) => {
             }
             .font-poppins { font-family: 'Poppins', sans-serif; }
 
-            /* Hero */
+            /* Hero - 改善案1: ダークオーバーレイ強化 */
             .hero-section {
-                background: linear-gradient(135deg, #e8f4f8 0%, #d1ecf1 50%, #b8e0e8 100%);
+                background: linear-gradient(135deg, #1a1a2e 0%, #2d2d50 50%, #1a1a2e 100%);
                 position: relative;
                 min-height: 600px;
             }
@@ -52,7 +52,7 @@ app.get('/', (c) => {
                 position: absolute;
                 inset: 0;
                 background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1920&q=80') center/cover no-repeat;
-                opacity: 0.15;
+                opacity: 0.4;
             }
 
             /* Section titles */
@@ -264,12 +264,12 @@ app.get('/', (c) => {
                 <div class="flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/2 text-center md:text-left">
                         <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">WEB DEVELOPMENT</p>
-                        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-gray-800">
+                        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-white">
                             はじめてのECも<br>
                             本格リニューアルも<br>
                             <span class="text-primary">技術で支える<br>あなたの挑戦</span>
                         </h1>
-                        <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+                        <p class="text-gray-200 mb-8 text-lg leading-relaxed">
                             お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
                             フリーランスならではの柔軟さとスピードで制作します。
                         </p>
