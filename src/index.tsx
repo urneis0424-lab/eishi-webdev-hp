@@ -277,7 +277,7 @@ app.get('/', (c) => {
                             <a href="#contact" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2">
                                 <i class="fas fa-envelope"></i> 無料相談する
                             </a>
-                            <a href="#works" class="border-2 border-gray-400 text-gray-600 px-8 py-4 rounded-full font-bold text-lg hover:border-primary hover:text-primary transition inline-flex items-center justify-center gap-2">
+                            <a href="#works" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition inline-flex items-center justify-center gap-2">
                                 <i class="fas fa-arrow-right"></i> 実績を見る
                             </a>
                         </div>
