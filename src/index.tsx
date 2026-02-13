@@ -273,12 +273,9 @@ app.get('/', (c) => {
                             お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
                             フリーランスならではの柔軟さとスピードで制作します。
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                            <a href="#contact" class="bg-blue-900 hover:bg-blue-800 text-white px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
+                        <div class="flex justify-center md:justify-start">
+                            <a href="#contact" class="bg-blue-900 hover:bg-blue-800 text-white px-10 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
                                 <i class="fas fa-envelope"></i> 無料相談する
-                            </a>
-                            <a href="#works" class="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-primary hover:text-white transition inline-flex items-center justify-center gap-2 shadow-lg">
-                                <i class="fas fa-arrow-right"></i> 実績を見る
                             </a>
                         </div>
                     </div>
