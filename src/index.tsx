@@ -363,7 +363,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://www.genspark.ai/api/files/s/frWQAlnR?cache_control=3600" alt="Landing Page" class="w-full h-64 object-cover">
+                        <img src="https://www.genspark.ai/api/files/s/gLOJWtEh?cache_control=3600" alt="Landing Page" class="w-full h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
                             <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
@@ -405,7 +405,6 @@ app.get('/', (c) => {
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
                             </div>
-                            </div>
                         </div>
                     </a>
 
@@ -422,7 +421,6 @@ app.get('/', (c) => {
                             <div class="flex gap-2 flex-wrap">
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
-                            </div>
                             </div>
                         </div>
                     </a>
@@ -693,32 +691,15 @@ app.get('/', (c) => {
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">
                                     ご相談内容 <span class="text-gray-400 font-normal text-xs">(複数選択可)</span>
                                 </label>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="new">
-                                        <span>新規制作</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="renewal">
-                                        <span>リニューアル</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="lp">
-                                        <span>LP</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="ec">
-                                        <span>Shopify等EC構築</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="design_code">
-                                        <span>デザインのみ/コーディングのみ</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="checkbox" name="consultation_type" value="other">
-                                        <span>その他</span>
-                                    </label>
-                                </div>
+                                <select name="consultation_type" multiple size="6" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                    <option value="new">新規制作</option>
+                                    <option value="renewal">リニューアル</option>
+                                    <option value="lp">LP</option>
+                                    <option value="ec">Shopify等EC構築</option>
+                                    <option value="design_code">デザインのみ/コーディングのみ</option>
+                                    <option value="other">その他</option>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-2">※Ctrl(Cmd)キーを押しながらクリックで複数選択可能</p>
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">希望プラン</label>
