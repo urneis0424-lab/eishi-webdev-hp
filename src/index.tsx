@@ -460,7 +460,7 @@ app.get('/', (c) => {
                     <p class="text-gray-400 mt-4">明瞭な料金体系で安心してご依頼いただけます</p>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-up">
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-up mt-8">
                     <!-- ライトプラン -->
                     <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
                         <div class="text-center mb-6">
@@ -497,7 +497,7 @@ app.get('/', (c) => {
 
                     <!-- スタンダードプラン (推奨 - 黄色ボーダーで強調) -->
                     <div class="pricing-card bg-dark-card rounded-xl p-8 text-white relative transform md:-translate-y-4" style="border: 3px solid #facc15;">
-                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
+                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
                             <i class="fas fa-star mr-1"></i>推奨
                         </div>
                         <div class="text-center mb-6 mt-2">
