@@ -179,6 +179,35 @@ app.get('/', (c) => {
                 transform: translateY(0);
             }
 
+            /* Hero animations */
+            .hero-text {
+                opacity: 0;
+                transform: translateY(40px);
+                animation: slideUpFade 0.8s ease-out forwards;
+            }
+            .hero-button {
+                opacity: 0;
+                transform: translateY(20px);
+                animation: slideUpFade 0.8s ease-out 0.4s forwards;
+            }
+            .hero-image {
+                opacity: 0;
+                transform: translateX(50px);
+                animation: slideInRight 0.8s ease-out 0.2s forwards;
+            }
+            @keyframes slideUpFade {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes slideInRight {
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
             /* Btn */
             .btn-primary {
                 background: #00c8c8;
@@ -263,23 +292,25 @@ app.get('/', (c) => {
             <div class="container mx-auto px-6 py-20 relative z-10">
                 <div class="flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/2 text-center md:text-left">
-                        <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">WEB DEVELOPMENT</p>
-                        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-white">
-                            はじめてのECも<br>
-                            本格リニューアルも<br>
-                            <span class="text-primary">技術で支える<br>あなたの挑戦</span>
-                        </h1>
-                        <p class="text-gray-200 mb-8 text-lg leading-relaxed">
-                            お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
-                            フリーランスならではの柔軟さとスピードで制作します。
-                        </p>
-                        <div class="flex justify-center md:justify-start">
+                        <div class="hero-text">
+                            <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">WEB DEVELOPMENT</p>
+                            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-white">
+                                はじめてのECも<br>
+                                本格リニューアルも<br>
+                                <span class="text-primary">技術で支える<br>あなたの挑戦</span>
+                            </h1>
+                            <p class="text-gray-200 mb-8 text-lg leading-relaxed">
+                                お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
+                                フリーランスならではの柔軟さとスピードで制作します。
+                            </p>
+                        </div>
+                        <div class="flex justify-center md:justify-start hero-button">
                             <a href="#contact" class="bg-blue-900 hover:bg-blue-800 text-white px-10 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
                                 <i class="fas fa-envelope"></i> 無料相談する
                             </a>
                         </div>
                     </div>
-                    <div class="md:w-1/2 relative">
+                    <div class="md:w-1/2 relative hero-image">
                         <div class="relative">
                             <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Web Development" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto" style="aspect-ratio:3/4;object-fit:cover;">
                         </div>
