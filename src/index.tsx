@@ -16,6 +16,13 @@ app.get('/', (c) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <!-- EmailJS -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script>
+            (function(){
+                emailjs.init('-625gei5vpG3V8t3b');
+            })();
+        </script>
         <script>
           tailwind.config = {
             theme: {
@@ -677,7 +684,7 @@ app.get('/', (c) => {
                 </div>
 
                 <div class="bg-gray-50 p-8 md:p-12 rounded-2xl shadow-lg fade-up">
-                    <form class="space-y-10" onsubmit="event.preventDefault(); alert('お問い合わせありがとうございます！内容を確認後、2営業日以内にご連絡いたします。')">
+                    <form id="contactForm" class="space-y-10">
 
                         <!-- Section 1: 基本情報 -->
                         <div>
@@ -687,11 +694,11 @@ app.get('/', (c) => {
                                     <label class="block text-gray-700 font-bold mb-2 text-sm">
                                         氏名 / 担当者名 <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="山田 太郎">
+                                    <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="山田 太郎">
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-bold mb-2 text-sm">貴社名</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="株式会社サンプル">
+                                    <input type="text" name="company" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="株式会社サンプル">
                                 </div>
                             </div>
                             <div class="grid md:grid-cols-2 gap-6 mt-6">
@@ -699,11 +706,11 @@ app.get('/', (c) => {
                                     <label class="block text-gray-700 font-bold mb-2 text-sm">
                                         メールアドレス <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="email" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="info@example.com">
+                                    <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="info@example.com">
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-bold mb-2 text-sm">現WebサイトURL <span class="text-gray-400 font-normal text-xs">(リニューアルの場合)</span></label>
-                                    <input type="url" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="https://example.com">
+                                    <input type="url" name="website" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="https://example.com">
                                 </div>
                             </div>
                         </div>
@@ -771,7 +778,7 @@ app.get('/', (c) => {
                                 <label class="block text-gray-700 font-bold mb-2 text-sm">
                                     お問い合わせ詳細 <span class="text-red-500">*</span>
                                 </label>
-                                <textarea rows="6" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="ご依頼の背景やご要望、参考サイトなどがあればお知らせください"></textarea>
+                                <textarea name="message" rows="6" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition" placeholder="ご依頼の背景やご要望、参考サイトなどがあればお知らせください"></textarea>
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">オンラインミーティング</label>
@@ -789,9 +796,10 @@ app.get('/', (c) => {
                         </div>
 
                         <div class="text-center pt-4">
-                            <button type="submit" class="btn-primary px-12 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
-                                <i class="fas fa-paper-plane"></i> 送信する
+                            <button type="submit" id="submitBtn" class="btn-primary px-12 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                                <i class="fas fa-paper-plane"></i> <span id="btnText">送信する</span>
                             </button>
+                            <p id="formMessage" class="mt-4 text-sm font-medium"></p>
                         </div>
                     </form>
                 </div>
@@ -871,6 +879,56 @@ app.get('/', (c) => {
                     header.classList.add('shadow-sm');
                     header.classList.remove('shadow-md');
                 }
+            });
+
+            // EmailJS Form Submission
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('submitBtn');
+                const btnText = document.getElementById('btnText');
+                const formMessage = document.getElementById('formMessage');
+                
+                // ボタンを無効化して送信中表示
+                submitBtn.disabled = true;
+                btnText.textContent = '送信中...';
+                formMessage.textContent = '';
+                formMessage.className = 'mt-4 text-sm font-medium';
+                
+                // フォームデータを取得
+                const formData = new FormData(this);
+                const templateParams = {
+                    name: formData.get('name'),
+                    company: formData.get('company') || '未入力',
+                    email: formData.get('email'),
+                    website: formData.get('website') || '未入力',
+                    consultation_type: this.consultation_type.options[this.consultation_type.selectedIndex].text,
+                    plan: this.plan.options[this.plan.selectedIndex].text,
+                    budget: this.budget.options[this.budget.selectedIndex].text,
+                    timeline: this.timeline.options[this.timeline.selectedIndex].text,
+                    message: formData.get('message'),
+                    meeting: formData.get('meeting') === 'yes' ? '希望する' : '希望しない'
+                };
+                
+                // EmailJS送信
+                emailjs.send('Eishi_Web_HP', 'Eishi_Web_form', templateParams)
+                    .then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                        formMessage.textContent = 'お問い合わせありがとうございます！内容を確認後、2営業日以内にご連絡いたします。';
+                        formMessage.className = 'mt-4 text-sm font-medium text-green-600';
+                        document.getElementById('contactForm').reset();
+                        btnText.textContent = '送信完了';
+                        setTimeout(() => {
+                            btnText.textContent = '送信する';
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    }, function(error) {
+                        console.error('FAILED...', error);
+                        formMessage.textContent = '送信に失敗しました。もう一度お試しいただくか、直接メールでご連絡ください。';
+                        formMessage.className = 'mt-4 text-sm font-medium text-red-600';
+                        btnText.textContent = '送信する';
+                        submitBtn.disabled = false;
+                    });
             });
         </script>
     </body>
