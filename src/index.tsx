@@ -363,7 +363,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://www.genspark.ai/api/files/s/gLOJWtEh?cache_control=3600" alt="Landing Page" class="w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" alt="Landing Page" class="w-full h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
                             <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
