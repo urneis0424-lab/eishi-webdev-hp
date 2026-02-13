@@ -232,7 +232,6 @@ app.get('/', (c) => {
                         <a href="#service" class="text-gray-600 hover:text-primary transition">SERVICE</a>
                         <a href="#works" class="text-gray-600 hover:text-primary transition">WORKS</a>
                         <a href="#pricing" class="text-gray-600 hover:text-primary transition">PRICING</a>
-                        <a href="#faq" class="text-gray-600 hover:text-primary transition">FAQ</a>
                         <a href="#contact" class="btn-primary px-6 py-2 rounded-full text-white text-sm font-bold">
                             CONTACT
                         </a>
@@ -254,7 +253,6 @@ app.get('/', (c) => {
                 <a href="#service" class="text-gray-700 hover:text-primary transition mobile-link">SERVICE</a>
                 <a href="#works" class="text-gray-700 hover:text-primary transition mobile-link">WORKS</a>
                 <a href="#pricing" class="text-gray-700 hover:text-primary transition mobile-link">PRICING</a>
-                <a href="#faq" class="text-gray-700 hover:text-primary transition mobile-link">FAQ</a>
                 <a href="#contact" class="btn-primary px-6 py-3 rounded-full text-white text-center font-bold mobile-link">CONTACT</a>
             </div>
         </div>
@@ -267,9 +265,9 @@ app.get('/', (c) => {
                     <div class="md:w-1/2 text-center md:text-left">
                         <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">WEB DEVELOPMENT</p>
                         <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-gray-800">
-                            はじめてのECも、<br>
-                            本格リニューアルも。<br>
-                            <span class="text-primary">技術で支える、<br>あなたの挑戦。</span>
+                            はじめてのECも<br>
+                            本格リニューアルも<br>
+                            <span class="text-primary">技術で支える<br>あなたの挑戦</span>
                         </h1>
                         <p class="text-gray-600 mb-8 text-lg leading-relaxed">
                             お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
@@ -297,56 +295,41 @@ app.get('/', (c) => {
             </div>
         </section>
 
-        <!-- Feature Circles Section (6 items) -->
+        <!-- Why Choose Us Section (3 items with images) -->
         <section id="about" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="fade-up">
-                    <div class="text-center mb-12">
+                    <div class="text-center mb-14">
                         <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">WHY CHOOSE US</p>
-                        <h2 class="text-3xl font-bold text-gray-800 section-bar">選ばれる<span class="text-primary">6つの理由</span></h2>
+                        <h2 class="text-3xl font-bold text-gray-800 section-bar">選ばれる<span class="text-primary">3つの理由</span></h2>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-bolt text-primary text-2xl"></i>
+                    <div class="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+                        <!-- 1. 一気通貫 -->
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="一気通貫" class="w-full h-48 object-cover">
+                            <div class="p-6 text-center">
+                                <h4 class="font-bold text-lg mb-1">一気通貫</h4>
+                                <p class="text-primary text-sm font-semibold mb-3">思考をそのままコードへ</p>
+                                <p class="text-gray-500 text-sm leading-relaxed">企画・デザイン・実装まで一人で完結。伝達ロスなく、あなたのイメージを正確にコードへ落とし込みます。</p>
                             </div>
-                            <h4 class="font-bold text-base">スピード対応を<br>一気通貫</h4>
-                            <p class="text-gray-500 text-sm mt-1">企画から公開まで一人で完結</p>
                         </div>
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-code text-primary text-2xl"></i>
+                        <!-- 2. 専任対応 -->
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                            <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="専任対応" class="w-full h-48 object-cover">
+                            <div class="p-6 text-center">
+                                <h4 class="font-bold text-lg mb-1">専任対応</h4>
+                                <p class="text-primary text-sm font-semibold mb-3">顔が見える安心感</p>
+                                <p class="text-gray-500 text-sm leading-relaxed">窓口は最初から最後まで一人。直接やり取りだから意思疎通が早く、適正価格でご提供します。</p>
                             </div>
-                            <h4 class="font-bold text-base">思考をそのまま<br>コードへ</h4>
-                            <p class="text-gray-500 text-sm mt-1">イメージを正確に実装</p>
                         </div>
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-yen-sign text-primary text-2xl"></i>
+                        <!-- 3. 柔軟性 -->
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="柔軟性" class="w-full h-48 object-cover">
+                            <div class="p-6 text-center">
+                                <h4 class="font-bold text-lg mb-1">柔軟性</h4>
+                                <p class="text-primary text-sm font-semibold mb-3">あなたのビジネスに合わせた最適解</p>
+                                <p class="text-gray-500 text-sm leading-relaxed">テンプレートに頼らず、急な変更にもスピーディに対応。ビジネスの成長に寄り添います。</p>
                             </div>
-                            <h4 class="font-bold text-base">適正価格を<br>専任対応</h4>
-                            <p class="text-gray-500 text-sm mt-1">中間マージンなし</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-user-check text-primary text-2xl"></i>
-                            </div>
-                            <h4 class="font-bold text-base">顔が見える<br>安心感</h4>
-                            <p class="text-gray-500 text-sm mt-1">直接やり取りで信頼構築</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-sync-alt text-primary text-2xl"></i>
-                            </div>
-                            <h4 class="font-bold text-base">柔軟性</h4>
-                            <p class="text-gray-500 text-sm mt-1">急な変更にもスピーディに対応</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="feature-circle mx-auto mb-4">
-                                <i class="fas fa-lightbulb text-primary text-2xl"></i>
-                            </div>
-                            <h4 class="font-bold text-base">あなたのビジネスに<br>合わせた最適解</h4>
-                            <p class="text-gray-500 text-sm mt-1">テンプレに頼らない提案</p>
                         </div>
                     </div>
                 </div>
@@ -380,7 +363,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8f5a70d?w=600&q=80" alt="Landing Page" class="w-full h-64 object-cover">
+                        <img src="https://www.genspark.ai/api/files/s/frWQAlnR?cache_control=3600" alt="Landing Page" class="w-full h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
                             <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
@@ -422,7 +405,7 @@ app.get('/', (c) => {
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
                             </div>
-                            <p class="text-primary text-xs mt-3 flex items-center gap-1"><i class="fas fa-external-link-alt"></i> k-luton.com</p>
+                            </div>
                         </div>
                     </a>
 
@@ -440,7 +423,7 @@ app.get('/', (c) => {
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
                             </div>
-                            <p class="text-primary text-xs mt-3 flex items-center gap-1"><i class="fas fa-external-link-alt"></i> sample-salon.pages.dev</p>
+                            </div>
                         </div>
                     </a>
 
@@ -514,43 +497,43 @@ app.get('/', (c) => {
                         </a>
                     </div>
 
-                    <!-- スタンダードプラン (Featured) -->
-                    <div class="pricing-card bg-primary rounded-xl p-8 text-white relative transform md:-translate-y-4">
-                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-gray-900 text-xs font-bold px-4 py-1 rounded-full">
+                    <!-- スタンダードプラン (推奨 - 黄色ボーダーで強調) -->
+                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white relative transform md:-translate-y-4" style="border: 3px solid #facc15;">
+                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
                             <i class="fas fa-star mr-1"></i>推奨
                         </div>
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
-                                <i class="fas fa-gem text-white text-2xl"></i>
+                        <div class="text-center mb-6 mt-2">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                                <i class="fas fa-gem text-primary text-2xl"></i>
                             </div>
                             <h3 class="font-poppins font-bold text-xl mb-1">STANDARD</h3>
-                            <p class="text-white/70 text-sm">スタンダードプラン</p>
+                            <p class="text-gray-400 text-sm">スタンダードプラン</p>
                         </div>
                         <div class="text-center mb-6">
                             <span class="text-3xl font-bold">¥250,000</span>
-                            <span class="text-white/70">〜</span>
+                            <span class="text-gray-400">〜</span>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-center gap-2 text-sm text-white/90 mb-2">
-                                <i class="fas fa-clock text-white text-xs"></i>
+                            <div class="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                                <i class="fas fa-clock text-primary text-xs"></i>
                                 <span>納期：着手から約1ヶ月</span>
                             </div>
-                            <div class="flex items-start gap-2 text-sm text-white/90 mb-2">
-                                <i class="fas fa-file-alt text-white text-xs mt-1"></i>
-                                <span>基本5ページまで<br><span class="text-xs text-white/60">(TOP / サービス紹介 / 実績一覧 / 会社概要 / お問い合わせ)</span></span>
+                            <div class="flex items-start gap-2 text-sm text-gray-300 mb-2">
+                                <i class="fas fa-file-alt text-primary text-xs mt-1"></i>
+                                <span>基本5ページまで<br><span class="text-xs text-gray-500">(TOP / サービス紹介 / 実績一覧 / 会社概要 / お問い合わせ)</span></span>
                             </div>
                         </div>
-                        <div class="bg-white/10 rounded-lg p-3 mb-4 text-xs text-white/80 space-y-1">
-                            <p><i class="fas fa-plus-circle mr-1"></i>CMS導入：+¥50,000</p>
-                            <p><i class="fas fa-plus-circle mr-1"></i>ページ追加：¥30,000〜50,000/1ページ</p>
+                        <div class="bg-white/5 rounded-lg p-3 mb-4 text-xs text-gray-400 space-y-1">
+                            <p><i class="fas fa-plus-circle mr-1 text-primary"></i>CMS導入：+¥50,000</p>
+                            <p><i class="fas fa-plus-circle mr-1 text-primary"></i>ページ追加：¥30,000〜50,000/1ページ</p>
                         </div>
-                        <div class="bg-white/10 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-white/80 leading-relaxed">
-                                <i class="fas fa-user text-white mr-1"></i>
+                        <div class="bg-white/5 rounded-lg p-4 mb-6">
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                <i class="fas fa-user text-primary mr-1"></i>
                                 事業の信頼性確立・自社情報発信を志向する方に最適。
                             </p>
                         </div>
-                        <a href="#contact" class="block w-full bg-white text-primary py-3 rounded-full font-bold text-center hover:bg-gray-100 transition">
+                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
                             相談する
                         </a>
                     </div>
@@ -638,69 +621,7 @@ app.get('/', (c) => {
             </div>
         </section>
 
-        <!-- FAQ Section -->
-        <section id="faq" class="py-24 bg-gray-50">
-            <div class="container mx-auto px-6 max-w-3xl">
-                <div class="text-center mb-16 fade-up">
-                    <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">FAQ</p>
-                    <h2 class="text-3xl font-bold text-gray-800 section-bar">よくある質問</h2>
-                </div>
 
-                <div class="space-y-0 bg-white rounded-xl shadow-md overflow-hidden fade-up">
-                    <div class="faq-item p-6" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-3">
-                                <span class="text-primary font-poppins font-bold">Q.</span>
-                                制作期間はどのくらいですか？
-                            </h3>
-                            <span class="faq-icon text-primary text-xl"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer text-gray-600 text-sm mt-3 pl-8">
-                            サイトの規模にもよりますが、ライトプランで約2週間、スタンダードプランで約1ヶ月、フルカスタムプランで2ヶ月〜が目安です。お急ぎの場合は特急対応（制作費の20%〜追加）も可能です。
-                        </div>
-                    </div>
-
-                    <div class="faq-item p-6" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-3">
-                                <span class="text-primary font-poppins font-bold">Q.</span>
-                                修正は何回まで可能ですか？
-                            </h3>
-                            <span class="faq-icon text-primary text-xl"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer text-gray-600 text-sm mt-3 pl-8">
-                            デザインフェーズで3回、コーディングフェーズで2回まで無料修正いたします。それ以降は別途お見積もりとなります。
-                        </div>
-                    </div>
-
-                    <div class="faq-item p-6" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-3">
-                                <span class="text-primary font-poppins font-bold">Q.</span>
-                                どんな業種でも対応できますか？
-                            </h3>
-                            <span class="faq-icon text-primary text-xl"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer text-gray-600 text-sm mt-3 pl-8">
-                            はい、IT・医療・飲食・不動産・美容など、幅広い業種のWeb制作実績がございます。業種に合わせた最適な提案をいたします。
-                        </div>
-                    </div>
-
-                    <div class="faq-item p-6" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-3">
-                                <span class="text-primary font-poppins font-bold">Q.</span>
-                                納品後のサポートはありますか？
-                            </h3>
-                            <span class="faq-icon text-primary text-xl"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer text-gray-600 text-sm mt-3 pl-8">
-                            はい、各プランに応じた無料サポート期間をご用意しています。サポート期間終了後も、月額保守プラン(¥20,000〜)で継続サポートが可能です。
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- CTA Section -->
         <section class="cta-gradient py-20 relative overflow-hidden">
@@ -711,7 +632,7 @@ app.get('/', (c) => {
                 <div class="fade-up">
                     <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">GET STARTED</p>
                     <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-                        Webサイトに関するお悩み、<br>まずはお気軽にご相談ください
+                        Webサイトに関するお悩み<br>まずはお気軽にご相談ください
                     </h2>
                     <p class="text-gray-400 mb-10 max-w-2xl mx-auto">
                         ご相談・お見積もりは無料で対応いたします。<br>
@@ -801,24 +722,13 @@ app.get('/', (c) => {
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">希望プラン</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="radio" name="plan" value="light">
-                                        <span>ライト</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="radio" name="plan" value="standard">
-                                        <span>スタンダード</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="radio" name="plan" value="fullcustom">
-                                        <span>フルカスタム</span>
-                                    </label>
-                                    <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                        <input type="radio" name="plan" value="undecided" checked>
-                                        <span>未決定</span>
-                                    </label>
-                                </div>
+                                <select name="plan" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                    <option value="" selected>選択してください</option>
+                                    <option value="light">ライト</option>
+                                    <option value="standard">スタンダード</option>
+                                    <option value="fullcustom">フルカスタム</option>
+                                    <option value="undecided">未決定</option>
+                                </select>
                             </div>
                         </div>
 
@@ -828,45 +738,23 @@ app.get('/', (c) => {
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-gray-700 font-bold mb-3 text-sm">ご予算</label>
-                                    <div class="space-y-2">
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="budget" value="under20">
-                                            <span>〜20万円</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="budget" value="20to40">
-                                            <span>20〜40万円</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="budget" value="40to60">
-                                            <span>40〜60万円</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="budget" value="over60">
-                                            <span>60万円以上</span>
-                                        </label>
-                                    </div>
+                                    <select name="budget" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                        <option value="" selected>選択してください</option>
+                                        <option value="under20">〜20万円</option>
+                                        <option value="20to40">20〜40万円</option>
+                                        <option value="40to60">40〜60万円</option>
+                                        <option value="over60">60万円以上</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-bold mb-3 text-sm">希望公開時期</label>
-                                    <div class="space-y-2">
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="timeline" value="1month">
-                                            <span>1ヶ月以内（特急あり）</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="timeline" value="2months">
-                                            <span>2ヶ月以内</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="timeline" value="3months">
-                                            <span>3ヶ月以内</span>
-                                        </label>
-                                        <label class="custom-check flex items-center gap-2 bg-white px-4 py-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition text-sm">
-                                            <input type="radio" name="timeline" value="undecided">
-                                            <span>未定</span>
-                                        </label>
-                                    </div>
+                                    <select name="timeline" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                        <option value="" selected>選択してください</option>
+                                        <option value="1month">1ヶ月以内（特急あり）</option>
+                                        <option value="2months">2ヶ月以内</option>
+                                        <option value="3months">3ヶ月以内</option>
+                                        <option value="undecided">未定</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -993,11 +881,6 @@ app.get('/', (c) => {
             document.getElementById('closeMenu').addEventListener('click', () => {
                 document.getElementById('mobileMenu').classList.remove('open');
             });
-
-            // FAQ toggle
-            function toggleFaq(el) {
-                el.classList.toggle('active');
-            }
 
             // Scroll animations
             const observer = new IntersectionObserver((entries) => {
