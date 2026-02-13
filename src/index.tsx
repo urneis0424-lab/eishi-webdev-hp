@@ -224,8 +224,8 @@ app.get('/', (c) => {
         <header class="bg-white shadow-sm fixed w-full top-0 z-50">
             <nav class="container mx-auto px-6 py-3">
                 <div class="flex justify-between items-center">
-                    <a href="#" class="font-poppins text-xl font-bold text-gray-800 tracking-wider">
-                        SAMPLE<span class="text-primary">.</span>
+                    <a href="#" class="font-poppins text-lg font-bold text-gray-800 tracking-wider">
+                        Eishi Urano <span class="text-gray-400">│</span> Web Developer
                     </a>
                     <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
                         <a href="#about" class="text-gray-600 hover:text-primary transition">ABOUT</a>
@@ -285,10 +285,6 @@ app.get('/', (c) => {
                     <div class="md:w-1/2 relative">
                         <div class="relative">
                             <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Web Development" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto" style="aspect-ratio:3/4;object-fit:cover;">
-                            <div class="absolute -bottom-4 -right-4 bg-primary text-white p-4 rounded-xl shadow-lg">
-                                <p class="font-poppins font-bold text-2xl">300+</p>
-                                <p class="text-sm">制作実績</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -689,9 +685,10 @@ app.get('/', (c) => {
                             <p class="form-section-title">2. 案件概要</p>
                             <div class="mb-6">
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">
-                                    ご相談内容 <span class="text-gray-400 font-normal text-xs">(複数選択可)</span>
+                                    ご相談内容
                                 </label>
-                                <select name="consultation_type" multiple size="6" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                <select name="consultation_type" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-white text-sm text-gray-700">
+                                    <option value="" selected>選択してください</option>
                                     <option value="new">新規制作</option>
                                     <option value="renewal">リニューアル</option>
                                     <option value="lp">LP</option>
@@ -699,7 +696,6 @@ app.get('/', (c) => {
                                     <option value="design_code">デザインのみ/コーディングのみ</option>
                                     <option value="other">その他</option>
                                 </select>
-                                <p class="text-xs text-gray-500 mt-2">※Ctrl(Cmd)キーを押しながらクリックで複数選択可能</p>
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-bold mb-3 text-sm">希望プラン</label>
@@ -777,25 +773,14 @@ app.get('/', (c) => {
         <!-- Footer -->
         <footer style="background:#111127;" class="text-white py-16">
             <div class="container mx-auto px-6">
-                <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div class="grid md:grid-cols-2 gap-10 mb-12">
                     <div>
                         <h3 class="font-poppins text-xl font-bold mb-4">
-                            SAMPLE<span class="text-primary">.</span>
+                            Eishi Urano <span class="text-gray-400">│</span> Web Developer
                         </h3>
                         <p class="text-gray-400 text-sm leading-relaxed">
                             フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供しています。
                         </p>
-                        <div class="flex space-x-4 mt-6">
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
                     </div>
 
                     <div>
@@ -807,35 +792,10 @@ app.get('/', (c) => {
                             <li><a href="#" class="hover:text-primary transition">SEO対策</a></li>
                         </ul>
                     </div>
-
-                    <div>
-                        <h4 class="font-bold mb-4 text-sm tracking-wider">COMPANY</h4>
-                        <ul class="space-y-3 text-gray-400 text-sm">
-                            <li><a href="#" class="hover:text-primary transition">プロフィール</a></li>
-                            <li><a href="#" class="hover:text-primary transition">制作実績</a></li>
-                            <li><a href="#" class="hover:text-primary transition">プライバシーポリシー</a></li>
-                            <li><a href="#" class="hover:text-primary transition">利用規約</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold mb-4 text-sm tracking-wider">CONTACT</h4>
-                        <ul class="space-y-3 text-gray-400 text-sm">
-                            <li class="flex items-center gap-3">
-                                <i class="fas fa-envelope text-primary"></i>info@sample-company.com
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fas fa-phone text-primary"></i>03-1234-5678
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fas fa-map-marker-alt text-primary"></i>東京都渋谷区xxx
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-                    <p>&copy; 2024 SAMPLE COMPANY. All rights reserved.</p>
+                    <p>&copy; 2026 Eishi Urano │ Web Developer. All rights reserved.</p>
                     <p class="mt-2 md:mt-0">Designed with <i class="fas fa-heart text-primary"></i> for freelancers</p>
                 </div>
             </div>
