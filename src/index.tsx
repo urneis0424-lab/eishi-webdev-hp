@@ -617,6 +617,151 @@ app.get('/', (c) => {
             </div>
         </section>
 
+        <!-- Maintenance Plan Section (Dark) -->
+        <section class="py-24" style="background:#1a1a2e;">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 fade-up">
+                    <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">MAINTENANCE</p>
+                    <h2 class="text-3xl font-bold text-white section-bar">保守運用プラン</h2>
+                    <p class="text-gray-400 mt-4">サイト公開後も安心してお任せください</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-up mt-12">
+                    <!-- ミニマムプラン -->
+                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                                <i class="fas fa-shield-alt text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="font-poppins font-bold text-xl mb-1">MINIMUM</h3>
+                            <p class="text-gray-400 text-sm">ミニマムプラン</p>
+                            <p class="text-gray-500 text-xs mt-1">サイトの健康診断</p>
+                        </div>
+                        <div class="text-center mb-6">
+                            <span class="text-3xl font-bold">¥5,000</span>
+                            <span class="text-gray-400">/月</span>
+                        </div>
+                        <div class="space-y-3 mb-6 text-sm">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">ドメイン・サーバーの維持管理</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">セキュリティ監視・システム保護</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">データの定期バックアップ</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">Web相談窓口（月1回まで）</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 rounded-lg p-4 mb-6">
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                <i class="fas fa-user text-primary mr-1"></i>
+                                まずは作ったサイトを安全に維持したい方に最適な、基本の保険プランです。
+                            </p>
+                        </div>
+                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
+                            相談する
+                        </a>
+                    </div>
+
+                    <!-- スタンダードプラン (推奨) -->
+                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white relative transform md:-translate-y-4" style="border: 3px solid #facc15;">
+                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
+                            <i class="fas fa-star mr-1"></i>一番人気
+                        </div>
+                        <div class="text-center mb-6 mt-2">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                                <i class="fas fa-sync-alt text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="font-poppins font-bold text-xl mb-1">STANDARD</h3>
+                            <p class="text-gray-400 text-sm">スタンダードプラン</p>
+                            <p class="text-gray-500 text-xs mt-1">更新・サポート</p>
+                        </div>
+                        <div class="text-center mb-6">
+                            <span class="text-3xl font-bold">¥15,000</span>
+                            <span class="text-gray-400">/月</span>
+                        </div>
+                        <div class="space-y-3 mb-6 text-sm">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">ミニマムプランの全内容</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">月1時間の作業枠（更新代行）</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">簡易アクセスレポート</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">優先不具合対応</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 rounded-lg p-4 mb-6">
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                <i class="fas fa-user text-primary mr-1"></i>
+                                常に情報を新しく保ち、集客に活かしたい店舗や個人事業主様向けの推奨プランです。
+                            </p>
+                        </div>
+                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
+                            相談する
+                        </a>
+                    </div>
+
+                    <!-- プレミアムプラン -->
+                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                                <i class="fas fa-chart-line text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="font-poppins font-bold text-xl mb-1">PREMIUM</h3>
+                            <p class="text-gray-400 text-sm">プレミアムプラン</p>
+                            <p class="text-gray-500 text-xs mt-1">改善・伴走</p>
+                        </div>
+                        <div class="text-center mb-6">
+                            <span class="text-3xl font-bold">¥30,000</span>
+                            <span class="text-gray-400">〜/月</span>
+                        </div>
+                        <div class="space-y-3 mb-6 text-sm">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">スタンダードプランの全内容</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">詳細なアクセス解析（GA4）</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">隔月のオンライン個別相談</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check text-primary text-xs mt-1"></i>
+                                <span class="text-gray-300">広告運用・マーケティング準備支援</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 rounded-lg p-4 mb-6">
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                <i class="fas fa-user text-primary mr-1"></i>
+                                データを分析して売上を伸ばしたい、将来的に広告も出したい方向けの攻めのプランです。
+                            </p>
+                        </div>
+                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
+                            相談する
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Flow Section -->
         <section class="py-24 bg-white">
             <div class="container mx-auto px-6">
