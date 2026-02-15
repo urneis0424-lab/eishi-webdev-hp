@@ -12,7 +12,32 @@ app.get('/', (c) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SAMPLE COMPANY | Web制作</title>
+        
+        <!-- SEO Meta Tags -->
+        <title>Eishi Urano | Web Developer - フリーランスWeb制作</title>
+        <meta name="description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。コーポレートサイト、ECサイト、ランディングページの制作から保守運用まで対応。">
+        <meta name="keywords" content="Web制作,フリーランス,Webデベロッパー,コーポレートサイト,ECサイト,LP制作,Cloudflare,Hono">
+        <meta name="author" content="Eishi Urano">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://eishi-webdev-hp.pages.dev/">
+        
+        <!-- Open Graph (OGP) Tags -->
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Eishi Urano | Web Developer">
+        <meta property="og:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
+        <meta property="og:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。コーポレートサイト、ECサイト、ランディングページの制作から保守運用まで対応。">
+        <meta property="og:url" content="https://eishi-webdev-hp.pages.dev/">
+        <meta property="og:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:locale" content="ja_JP">
+        
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
+        <meta name="twitter:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。">
+        <meta name="twitter:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,6 +47,31 @@ app.get('/', (c) => {
             (function(){
                 emailjs.init('-625gei5vpG3V8t3b');
             })();
+        </script>
+        
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Eishi Urano",
+          "jobTitle": "Web Developer",
+          "description": "フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供しています。",
+          "url": "https://eishi-webdev-hp.pages.dev/",
+          "knowsAbout": ["Web Development", "Frontend Development", "Cloudflare Pages", "Hono Framework", "TypeScript"],
+          "offers": {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Web制作サービス",
+              "description": "コーポレートサイト、ECサイト、ランディングページの制作",
+              "provider": {
+                "@type": "Person",
+                "name": "Eishi Urano"
+              }
+            }
+          }
+        }
         </script>
         <script>
           tailwind.config = {
@@ -800,7 +850,7 @@ app.get('/', (c) => {
         <!-- CTA Section -->
         <section class="cta-gradient py-20 relative overflow-hidden">
             <div class="absolute inset-0 opacity-10">
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" alt="" class="w-full h-full object-cover">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" alt="デジタルテクノロジーとWeb開発のイメージ" class="w-full h-full object-cover">
             </div>
             <div class="container mx-auto px-6 text-center relative z-10">
                 <div class="fade-up">
