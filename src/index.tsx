@@ -28,7 +28,7 @@ app.get('/', (c) => {
         <meta property="og:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
         <meta property="og:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。コーポレートサイト、ECサイト、ランディングページの制作から保守運用まで対応。">
         <meta property="og:url" content="https://eishi-webdev-hp.pages.dev/">
-        <meta property="og:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg">
+        <meta property="og:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg?v=2">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:locale" content="ja_JP">
@@ -37,7 +37,7 @@ app.get('/', (c) => {
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
         <meta name="twitter:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。">
-        <meta name="twitter:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg">
+        <meta name="twitter:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg?v=2">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
