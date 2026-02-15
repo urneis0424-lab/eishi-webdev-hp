@@ -1,50 +1,9 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
-type Bindings = {
-  EMAILJS_PUBLIC_KEY: string
-  EMAILJS_SERVICE_ID: string
-  EMAILJS_TEMPLATE_ID: string
-}
-
-const app = new Hono<{ Bindings: Bindings }>()
+const app = new Hono()
 
 app.use('/api/*', cors())
-
-// メール送信APIエンドポイント
-app.post('/api/contact', async (c) => {
-  try {
-    const formData = await c.req.json()
-    
-    // 環境変数から取得
-    const publicKey = c.env.EMAILJS_PUBLIC_KEY
-    const serviceId = c.env.EMAILJS_SERVICE_ID
-    const templateId = c.env.EMAILJS_TEMPLATE_ID
-    
-    // EmailJS APIを呼び出し
-    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        service_id: serviceId,
-        template_id: templateId,
-        user_id: publicKey,
-        template_params: formData
-      })
-    })
-    
-    if (!response.ok) {
-      throw new Error('EmailJS API error')
-    }
-    
-    return c.json({ success: true, message: 'メール送信成功' })
-  } catch (error) {
-    console.error('Contact form error:', error)
-    return c.json({ success: false, message: 'メール送信失敗' }, 500)
-  }
-})
 
 app.get('/', (c) => {
   return c.html(`
@@ -82,6 +41,14 @@ app.get('/', (c) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        
+        <!-- EmailJS SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script>
+            (function(){
+                emailjs.init('-625gei5vpG3V8t3b');
+            })();
+        </script>
         
         <!-- JSON-LD Structured Data -->
         <script type="application/ld+json">
@@ -1139,17 +1106,10 @@ app.get('/', (c) => {
                     meeting: formData.get('meeting') === 'yes' ? '希望する' : '希望しない'
                 };
                 
-                // 自前のAPIエンドポイントに送信
-                fetch('/api/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(templateParams)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
+                // EmailJSで直接送信
+                emailjs.send('Eishi_Web_HP', 'Eishi_Web_form', templateParams)
+                    .then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
                         formMessage.textContent = 'お問い合わせありがとうございます！内容を確認後、2営業日以内にご連絡いたします。';
                         formMessage.className = 'mt-4 text-sm font-medium text-green-600';
                         document.getElementById('contactForm').reset();
@@ -1158,17 +1118,13 @@ app.get('/', (c) => {
                             btnText.textContent = '送信する';
                             submitBtn.disabled = false;
                         }, 3000);
-                    } else {
-                        throw new Error('送信失敗');
-                    }
-                })
-                .catch(error => {
-                    console.error('FAILED...', error);
-                    formMessage.textContent = '送信に失敗しました。もう一度お試しいただくか、直接メールでご連絡ください。';
-                    formMessage.className = 'mt-4 text-sm font-medium text-red-600';
-                    btnText.textContent = '送信する';
-                    submitBtn.disabled = false;
-                });
+                    }, function(error) {
+                        console.error('FAILED...', error);
+                        formMessage.textContent = '送信に失敗しました。もう一度お試しいただくか、直接メールでご連絡ください。';
+                        formMessage.className = 'mt-4 text-sm font-medium text-red-600';
+                        btnText.textContent = '送信する';
+                        submitBtn.disabled = false;
+                    });
             });
         </script>
     </body>

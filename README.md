@@ -30,81 +30,35 @@
 | URI | 説明 | メソッド | 認証 |
 |-----|------|---------|------|
 | `/` | メインページ | GET | - |
-| `/api/contact` | お問い合わせフォーム送信 | POST | - |
 
-### `/api/contact` リクエスト例
-```json
-{
-  "name": "山田 太郎",
-  "company": "株式会社サンプル",
-  "email": "info@example.com",
-  "website": "https://example.com",
-  "consultation_type": "新規制作",
-  "plan": "スタンダードプラン",
-  "budget": "20〜40万円",
-  "timeline": "2ヶ月以内",
-  "message": "Webサイト制作をお願いしたいです",
-  "meeting": "希望する"
-}
-```
+※お問い合わせフォームは、フロントエンドから直接EmailJS APIを呼び出します。
 
 ## 環境変数の設定
 
-### 必要な環境変数
-このプロジェクトは、EmailJS APIを使用してお問い合わせフォームからメールを送信します。以下の環境変数が必要です：
+このプロジェクトは環境変数を使用しません。EmailJSのPublic Keyはフロントエンドに直接記述されており、公開されても安全です。
 
-```bash
-EMAILJS_PUBLIC_KEY=your-public-key
-EMAILJS_SERVICE_ID=your-service-id
-EMAILJS_TEMPLATE_ID=your-template-id
-```
-
-### ローカル開発環境での設定
-
-1. `.dev.vars` ファイルを作成（プロジェクトルートに）：
-```bash
-# .dev.vars
-EMAILJS_PUBLIC_KEY=-625gei5vpG3V8t3b
-EMAILJS_SERVICE_ID=Eishi_Web_HP
-EMAILJS_TEMPLATE_ID=Eishi_Web_form
-```
-
-2. `.dev.vars` は `.gitignore` に含まれているため、GitHubにプッシュされません
-
-### Cloudflare Pages（本番環境）での設定
-
-#### 方法1: Cloudflare Dashboardから設定（推奨）
-1. https://dash.cloudflare.com/ にログイン
-2. Pages → `eishi-webdev-hp` プロジェクトを選択
-3. **Settings** → **Environment variables** に移動
-4. 以下の環境変数を追加：
-   - `EMAILJS_PUBLIC_KEY`: `-625gei5vpG3V8t3b`
-   - `EMAILJS_SERVICE_ID`: `Eishi_Web_HP`
-   - `EMAILJS_TEMPLATE_ID`: `Eishi_Web_form`
-5. **Save** をクリック
-6. 再デプロイして変更を反映
-
-#### 方法2: Wrangler CLIから設定
-```bash
-# 環境変数を設定
-npx wrangler pages secret put EMAILJS_PUBLIC_KEY --project-name eishi-webdev-hp
-npx wrangler pages secret put EMAILJS_SERVICE_ID --project-name eishi-webdev-hp
-npx wrangler pages secret put EMAILJS_TEMPLATE_ID --project-name eishi-webdev-hp
-
-# 設定を確認
-npx wrangler pages secret list --project-name eishi-webdev-hp
-```
+### セキュリティ確保のために
+EmailJSダッシュボードで「Allowed Domains」を設定してください（上記のセキュリティ対策を参照）。
 
 ## セキュリティ対策
-- ✅ APIキーを環境変数で管理（`.dev.vars`、Cloudflare環境変数）
-- ✅ `.dev.vars` を `.gitignore` に追加済み
-- ✅ フロントエンドに機密情報を露出しない
-- ✅ バックエンド（Hono）経由でメール送信
-- 🟡 EmailJSのドメイン制限設定を推奨（EmailJSダッシュボードで設定）
+- ✅ EmailJSのPublic Keyを使用（ブラウザからの直接呼び出し）
+- ✅ EmailJSダッシュボードで「Allowed Domains」設定を推奨
+  - `eishi-webdev-hp.pages.dev` のみ許可
+  - 他のドメインからのリクエストを拒否
 - 🟡 reCAPTCHA統合を推奨（スパム対策）
 
+### EmailJSセキュリティ設定手順
+1. https://dashboard.emailjs.com/ にログイン
+2. **Account** → **Security** タブ
+3. **Allowed Domains** に以下を追加：
+   - `eishi-webdev-hp.pages.dev`
+   - `localhost:3000`（開発用）
+4. **Save** をクリック
+
+これで、指定したドメイン以外からのリクエストは自動的に拒否されます。
+
 ## データ構造
-現在はデータベースを使用していません。お問い合わせはEmailJS経由でメール送信されます。
+現在はデータベースを使用していません。お問い合わせはEmailJS経由でメール送信されます（ブラウザから直接APIコール）。
 
 ## 技術スタック
 - **フレームワーク**: Hono (Cloudflare Workers対応)
@@ -113,7 +67,7 @@ npx wrangler pages secret list --project-name eishi-webdev-hp
 - **アイコン**: Font Awesome
 - **フォント**: Google Fonts (Noto Sans JP, Poppins)
 - **プロセス管理**: PM2
-- **メール送信**: EmailJS API
+- **メール送信**: EmailJS API（フロントエンドから直接呼び出し）
 - **ホスティング**: Cloudflare Pages
 
 ## SEO対策
@@ -137,13 +91,6 @@ npx wrangler pages secret list --project-name eishi-webdev-hp
 ```bash
 # 依存関係のインストール
 npm install
-
-# 環境変数ファイルを作成
-cat > .dev.vars << 'EOF'
-EMAILJS_PUBLIC_KEY=-625gei5vpG3V8t3b
-EMAILJS_SERVICE_ID=Eishi_Web_HP
-EMAILJS_TEMPLATE_ID=Eishi_Web_form
-EOF
 ```
 
 ### 開発サーバー起動
@@ -169,7 +116,6 @@ pm2 restart webapp
 ### 前提条件
 1. Cloudflare API Tokenの設定（GenSpark Deployタブ）
 2. GitHubリポジトリとCloudflare Pagesの連携
-3. 環境変数の設定（上記参照）
 
 ### デプロイ手順
 ```bash
@@ -190,7 +136,6 @@ git push origin main
 - **Build command**: `npm run build`
 - **Build output directory**: `dist`
 - **Root directory**: （空欄）
-- **Environment variables**: 上記の3つを設定
 
 ## プロジェクト構成
 ```
@@ -202,7 +147,6 @@ webapp/
 │   ├── sitemap.xml        # サイトマップ
 │   └── static/            # 静的ファイル（CSS、JS等）
 ├── dist/                  # ビルド出力（Cloudflare Pagesにデプロイ）
-├── .dev.vars              # ローカル環境変数（Git管理外）
 ├── .gitignore             # Git除外設定
 ├── ecosystem.config.cjs   # PM2設定
 ├── package.json           # 依存関係とスクリプト
@@ -214,20 +158,10 @@ webapp/
 ## トラブルシューティング
 
 ### お問い合わせフォームが動作しない
-1. 環境変数が正しく設定されているか確認
-   ```bash
-   # ローカル: .dev.vars ファイルの存在確認
-   cat .dev.vars
-   
-   # 本番: Cloudflare Dashboard → Settings → Environment variables
-   ```
-2. ブラウザのコンソールでエラーを確認
-3. `/api/contact` エンドポイントが正常に動作しているか確認
-   ```bash
-   curl -X POST http://localhost:3000/api/contact \
-     -H "Content-Type: application/json" \
-     -d '{"name":"Test","email":"test@example.com",...}'
-   ```
+1. ブラウザのコンソールでエラーを確認
+2. EmailJSダッシュボードで「Allowed Domains」が正しく設定されているか確認
+3. EmailJSのService IDとTemplate IDが正しいか確認
+4. ブラウザで直接EmailJS APIを呼び出せるか確認（開発者ツールのNetworkタブ）
 
 ### OG画像が表示されない
 1. Facebook Sharing Debuggerで「Scrape Again」を2〜3回クリック
