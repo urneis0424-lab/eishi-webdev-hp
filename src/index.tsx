@@ -19,6 +19,11 @@ app.get('/', (c) => {
         <meta name="keywords" content="Web制作,フリーランス,Webデベロッパー,コーポレートサイト,ECサイト,LP制作,Cloudflare,Hono">
         <meta name="author" content="Eishi Urano">
         
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="alternate icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        
         <!-- Canonical URL -->
         <link rel="canonical" href="https://eishi-webdev-hp.pages.dev/">
         
