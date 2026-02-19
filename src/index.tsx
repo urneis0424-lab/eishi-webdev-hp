@@ -521,7 +521,6 @@ app.get('/', (c) => {
                         </div>
                         <div class="p-6">
                             <h3 class="font-bold text-lg mb-2">SaaS企業 サービスLP</h3>
-                            <p class="text-gray-500 text-sm mb-4">CVR 180%改善を実現した高品質ランディングページ</p>
                             <div class="flex gap-2 flex-wrap">
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">LP制作</span>
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">広告連携</span>
