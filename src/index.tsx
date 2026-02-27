@@ -512,7 +512,7 @@ app.get('/', (c) => {
                         </div>
                     </a>
 
-                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                    <a href="https://saas-sample.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
                         <div class="relative">
                             <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&q=80" alt="Work 3" class="w-full h-52 object-cover">
                             <div class="absolute top-4 left-4">
@@ -526,7 +526,7 @@ app.get('/', (c) => {
                                 <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">広告連携</span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="text-center mt-12">
