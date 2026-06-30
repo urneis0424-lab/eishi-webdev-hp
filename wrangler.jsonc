@@ -6,11 +6,8 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "vars": {
-    "MICROCMS_SERVICE_DOMAIN": "0gqerpyzd0"
-  },
-  // シークレット（APIキー）はダッシュボードまたは wrangler secret put で設定
-  // MICROCMS_API_KEY
+  // 環境変数はCloudflare Pagesダッシュボードで設定
+  // MICROCMS_SERVICE_DOMAIN, MICROCMS_API_KEY
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
