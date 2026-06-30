@@ -309,6 +309,78 @@ app.get('/', async (c) => {
             }
             .connector:last-child::after { display: none; }
 
+            /* Service Carousel */
+            .service-carousel-wrap {
+                position: relative;
+                overflow: hidden;
+            }
+            .service-track {
+                display: flex;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                will-change: transform;
+                cursor: grab;
+                user-select: none;
+            }
+            .service-track.dragging {
+                transition: none;
+                cursor: grabbing;
+            }
+            .service-card-slide {
+                flex: 0 0 85%;
+                padding: 0 8px;
+            }
+            .service-dots {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 20px;
+            }
+            .service-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.3);
+                transition: background 0.3s, transform 0.3s;
+                cursor: pointer;
+            }
+            .service-dot.active {
+                background: #00c8c8;
+                transform: scale(1.25);
+            }
+            .service-nav {
+                position: absolute;
+                top: 40%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border: 2px solid #00c8c8;
+                background: rgba(255,255,255,0.1);
+                color: #00c8c8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+                z-index: 10;
+                font-size: 14px;
+            }
+            .service-nav:hover { background: #00c8c8; color: #1a1a2e; }
+            .service-nav.prev { left: 0; }
+            .service-nav.next { right: 0; }
+            @media (min-width: 768px) {
+                .service-carousel-wrap { overflow: visible; }
+                .service-track {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 2rem;
+                    transform: none !important;
+                    cursor: default;
+                }
+                .service-card-slide { padding: 0; flex: none; }
+                .service-dots, .service-nav { display: none; }
+            }
+
             /* Reasons Carousel */
             .reasons-carousel-wrap {
                 position: relative;
@@ -677,37 +749,54 @@ app.get('/', async (c) => {
                     <p class="text-gray-400 mt-4">お客様のビジネスに最適なWebソリューションを提供します</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto fade-up">
-                    <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Corporate Site" class="w-full h-36 md:h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">コーポレートサイト制作</h3>
-                            <p class="text-gray-300 text-sm">企業の信頼性を高めるWebサイト</p>
+                <div class="max-w-4xl mx-auto px-8 fade-up">
+                    <div class="service-carousel-wrap">
+                        <button class="service-nav prev" id="servicePrev"><i class="fas fa-chevron-left"></i></button>
+                        <button class="service-nav next" id="serviceNext"><i class="fas fa-chevron-right"></i></button>
+                        <div class="service-track" id="serviceTrack">
+                            <div class="service-card-slide">
+                                <div class="group relative rounded-xl overflow-hidden card-hover">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Corporate Site" class="w-full h-64 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                        <h3 class="text-white font-bold text-xl mb-2">コーポレートサイト制作</h3>
+                                        <p class="text-gray-300 text-sm">企業の信頼性を高めるWebサイト</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card-slide">
+                                <div class="group relative rounded-xl overflow-hidden card-hover">
+                                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="EC Site" class="w-full h-64 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                        <h3 class="text-white font-bold text-xl mb-2">ECサイト構築</h3>
+                                        <p class="text-gray-300 text-sm">売上を最大化するオンラインショップ</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card-slide">
+                                <div class="group relative rounded-xl overflow-hidden card-hover">
+                                    <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" alt="Landing Page" class="w-full h-64 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                        <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
+                                        <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card-slide">
+                                <div class="group relative rounded-xl overflow-hidden card-hover">
+                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="SEO" class="w-full h-64 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                        <h3 class="text-white font-bold text-xl mb-2">SEO対策</h3>
+                                        <p class="text-gray-300 text-sm">検索上位表示を目指す施策</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="EC Site" class="w-full h-36 md:h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">ECサイト構築</h3>
-                            <p class="text-gray-300 text-sm">売上を最大化するオンラインショップ</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" alt="Landing Page" class="w-full h-36 md:h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
-                            <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="SEO" class="w-full h-36 md:h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">SEO対策</h3>
-                            <p class="text-gray-300 text-sm">検索上位表示を目指す施策</p>
-                        </div>
+                    <div class="service-dots" id="serviceDots">
+                        <span class="service-dot active" data-index="0"></span>
+                        <span class="service-dot" data-index="1"></span>
+                        <span class="service-dot" data-index="2"></span>
+                        <span class="service-dot" data-index="3"></span>
                     </div>
                 </div>
             </div>
@@ -1026,6 +1115,73 @@ app.get('/', async (c) => {
                             }
                         });
                     });
+                });
+            })();
+
+            // Service Carousel
+            (function() {
+                const track = document.getElementById('serviceTrack');
+                const dots = document.querySelectorAll('#serviceDots .service-dot');
+                const total = 4;
+                let current = 0;
+                let startX = 0;
+                let dragDelta = 0;
+                let isDragging = false;
+                const slideWidth = 85;
+
+                function isMobile() {
+                    return window.innerWidth < 768;
+                }
+
+                function goTo(index) {
+                    if (!isMobile()) return;
+                    current = (index + total) % total;
+                    track.style.transform = 'translateX(-' + (current * slideWidth) + '%)';
+                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                }
+
+                document.getElementById('servicePrev').addEventListener('click', () => goTo(current - 1));
+                document.getElementById('serviceNext').addEventListener('click', () => goTo(current + 1));
+                dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
+
+                track.addEventListener('touchstart', e => {
+                    if (!isMobile()) return;
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                }, { passive: true });
+                track.addEventListener('touchmove', e => {
+                    if (!isMobile() || !isDragging) return;
+                    dragDelta = e.touches[0].clientX - startX;
+                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
+                }, { passive: true });
+                track.addEventListener('touchend', () => {
+                    if (!isMobile()) return;
+                    isDragging = false;
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
+                });
+
+                track.addEventListener('mousedown', e => {
+                    if (!isMobile()) return;
+                    startX = e.clientX;
+                    isDragging = true;
+                    track.classList.add('dragging');
+                });
+                window.addEventListener('mousemove', e => {
+                    if (!isDragging || !isMobile()) return;
+                    dragDelta = e.clientX - startX;
+                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
+                });
+                window.addEventListener('mouseup', () => {
+                    if (!isDragging || !isMobile()) return;
+                    isDragging = false;
+                    track.classList.remove('dragging');
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
                 });
             })();
 
