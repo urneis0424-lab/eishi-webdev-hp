@@ -275,18 +275,20 @@ app.get('/', async (c) => {
             }
             .service-track {
                 display: flex;
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 will-change: transform;
                 cursor: grab;
                 user-select: none;
+                touch-action: pan-y;
+                -webkit-tap-highlight-color: transparent;
             }
             .service-track.dragging {
                 transition: none;
                 cursor: grabbing;
             }
             .service-card-slide {
-                flex: 0 0 85%;
-                padding: 0 8px;
+                flex: 0 0 94%;
+                padding: 0 6px;
             }
             .service-dots {
                 display: flex;
@@ -344,15 +346,17 @@ app.get('/', async (c) => {
             .reasons-carousel-wrap {
                 position: relative;
                 overflow: hidden;
-                max-width: 420px;
+                max-width: 520px;
                 margin: 0 auto;
             }
             .reasons-track {
                 display: flex;
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 will-change: transform;
                 cursor: grab;
                 user-select: none;
+                touch-action: pan-y;
+                -webkit-tap-highlight-color: transparent;
             }
             .reasons-track.dragging {
                 transition: none;
@@ -657,7 +661,7 @@ app.get('/', async (c) => {
                                 <!-- 1. 一気通貫 -->
                                 <div class="reasons-card">
                                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="一気通貫" class="w-full h-48 object-cover">
+                                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="一気通貫" class="w-full h-60 object-cover">
                                         <div class="p-6 text-center">
                                             <h4 class="font-bold text-lg mb-1">一気通貫</h4>
                                             <p class="text-primary text-sm font-semibold mb-3">思考をそのままコードへ</p>
@@ -668,7 +672,7 @@ app.get('/', async (c) => {
                                 <!-- 2. 専任対応 -->
                                 <div class="reasons-card">
                                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                                        <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="専任対応" class="w-full h-48 object-cover">
+                                        <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="専任対応" class="w-full h-60 object-cover">
                                         <div class="p-6 text-center">
                                             <h4 class="font-bold text-lg mb-1">専任対応</h4>
                                             <p class="text-primary text-sm font-semibold mb-3">顔が見える安心感</p>
@@ -679,7 +683,7 @@ app.get('/', async (c) => {
                                 <!-- 3. 柔軟性 -->
                                 <div class="reasons-card">
                                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="柔軟性" class="w-full h-48 object-cover">
+                                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="柔軟性" class="w-full h-60 object-cover">
                                         <div class="p-6 text-center">
                                             <h4 class="font-bold text-lg mb-1">柔軟性</h4>
                                             <p class="text-primary text-sm font-semibold mb-3">あなたのビジネスに合わせた最適解</p>
@@ -1086,7 +1090,8 @@ app.get('/', async (c) => {
                 let startX = 0;
                 let dragDelta = 0;
                 let isDragging = false;
-                const slideWidth = 85;
+                let rafId = null;
+                const slideWidth = 94;
 
                 function isMobile() {
                     return window.innerWidth < 768;
@@ -1099,6 +1104,15 @@ app.get('/', async (c) => {
                     dots.forEach((d, i) => d.classList.toggle('active', i === current));
                 }
 
+                function updateDragPosition() {
+                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
+                    rafId = null;
+                }
+
+                function queueDragUpdate() {
+                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
+                }
+
                 document.getElementById('servicePrev').addEventListener('click', () => goTo(current - 1));
                 document.getElementById('serviceNext').addEventListener('click', () => goTo(current + 1));
                 dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
@@ -1107,15 +1121,17 @@ app.get('/', async (c) => {
                     if (!isMobile()) return;
                     startX = e.touches[0].clientX;
                     isDragging = true;
+                    track.classList.add('dragging');
                 }, { passive: true });
                 track.addEventListener('touchmove', e => {
                     if (!isMobile() || !isDragging) return;
                     dragDelta = e.touches[0].clientX - startX;
-                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
+                    queueDragUpdate();
                 }, { passive: true });
                 track.addEventListener('touchend', () => {
                     if (!isMobile()) return;
                     isDragging = false;
+                    track.classList.remove('dragging');
                     if (dragDelta < -50) goTo(current + 1);
                     else if (dragDelta > 50) goTo(current - 1);
                     else goTo(current);
@@ -1131,7 +1147,7 @@ app.get('/', async (c) => {
                 window.addEventListener('mousemove', e => {
                     if (!isDragging || !isMobile()) return;
                     dragDelta = e.clientX - startX;
-                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
+                    queueDragUpdate();
                 });
                 window.addEventListener('mouseup', () => {
                     if (!isDragging || !isMobile()) return;
@@ -1153,6 +1169,7 @@ app.get('/', async (c) => {
                 let startX = 0;
                 let dragDelta = 0;
                 let isDragging = false;
+                let rafId = null;
 
                 function isMobile() {
                     return window.innerWidth < 768;
@@ -1165,6 +1182,15 @@ app.get('/', async (c) => {
                     dots.forEach((d, i) => d.classList.toggle('active', i === current));
                 }
 
+                function updateDragPosition() {
+                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                    rafId = null;
+                }
+
+                function queueDragUpdate() {
+                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
+                }
+
                 document.getElementById('reasonsPrev').addEventListener('click', () => goTo(current - 1));
                 document.getElementById('reasonsNext').addEventListener('click', () => goTo(current + 1));
                 dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
@@ -1174,15 +1200,17 @@ app.get('/', async (c) => {
                     if (!isMobile()) return;
                     startX = e.touches[0].clientX;
                     isDragging = true;
+                    track.classList.add('dragging');
                 }, { passive: true });
                 track.addEventListener('touchmove', e => {
                     if (!isMobile() || !isDragging) return;
                     dragDelta = e.touches[0].clientX - startX;
-                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                    queueDragUpdate();
                 }, { passive: true });
                 track.addEventListener('touchend', () => {
                     if (!isMobile()) return;
                     isDragging = false;
+                    track.classList.remove('dragging');
                     if (dragDelta < -50) goTo(current + 1);
                     else if (dragDelta > 50) goTo(current - 1);
                     else goTo(current);
@@ -1199,7 +1227,7 @@ app.get('/', async (c) => {
                 window.addEventListener('mousemove', e => {
                     if (!isDragging || !isMobile()) return;
                     dragDelta = e.clientX - startX;
-                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                    queueDragUpdate();
                 });
                 window.addEventListener('mouseup', () => {
                     if (!isDragging || !isMobile()) return;
