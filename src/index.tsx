@@ -50,48 +50,7 @@ async function fetchTags(serviceDomain: string, apiKey: string): Promise<Tag[]> 
 
 function renderWorkCards(works: Work[]): string {
   if (works.length === 0) {
-    return `
-      <a href="https://k-luton.com/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-        <div class="relative">
-          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="ハウスクリーニング" class="w-full h-52 object-cover">
-          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">コーポレート</span></div>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-lg mb-2">ハウスクリーニング</h3>
-          <p class="text-gray-500 text-sm mb-4">清潔感と信頼感を伝えるコーポレートサイト</p>
-          <div class="flex gap-2 flex-wrap">
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
-          </div>
-        </div>
-      </a>
-      <a href="https://sample-salon.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-        <div class="relative">
-          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="美容室" class="w-full h-52 object-cover">
-          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">サロン</span></div>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-lg mb-2">美容室</h3>
-          <p class="text-gray-500 text-sm mb-4">ブランドの世界観を表現するサロンサイト</p>
-          <div class="flex gap-2 flex-wrap">
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
-          </div>
-        </div>
-      </a>
-      <a href="https://saas-sample.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-        <div class="relative">
-          <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&q=80" alt="SaaS" class="w-full h-52 object-cover">
-          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">LP</span></div>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-lg mb-2">SaaS企業 サービスLP</h3>
-          <div class="flex gap-2 flex-wrap">
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">LP制作</span>
-            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">広告連携</span>
-          </div>
-        </div>
-      </a>`
+    return `<p class="text-center text-gray-400 col-span-full py-12">準備中です。近日公開予定。</p>`
   }
 
   return works.map(work => {
