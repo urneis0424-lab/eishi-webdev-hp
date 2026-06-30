@@ -1,11 +1,154 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
-const app = new Hono()
+type Env = {
+  MICROCMS_SERVICE_DOMAIN: string
+  MICROCMS_API_KEY: string
+}
+
+type Tag = {
+  id: string
+  name: string
+}
+
+type Work = {
+  id: string
+  companyName: string
+  description: string
+  image: { url: string }
+  tags: Tag[]
+  url?: string
+}
+
+async function fetchWorks(serviceDomain: string, apiKey: string): Promise<Work[]> {
+  try {
+    const res = await fetch(
+      `https://${serviceDomain}.microcms.io/api/v1/works?limit=20&depth=2`,
+      { headers: { 'X-MICROCMS-API-KEY': apiKey } }
+    )
+    if (!res.ok) return []
+    const data = await res.json() as { contents: Work[] }
+    return data.contents
+  } catch {
+    return []
+  }
+}
+
+async function fetchTags(serviceDomain: string, apiKey: string): Promise<Tag[]> {
+  try {
+    const res = await fetch(
+      `https://${serviceDomain}.microcms.io/api/v1/tags?limit=100`,
+      { headers: { 'X-MICROCMS-API-KEY': apiKey } }
+    )
+    if (!res.ok) return []
+    const data = await res.json() as { contents: Tag[] }
+    return data.contents
+  } catch {
+    return []
+  }
+}
+
+function renderWorkCards(works: Work[]): string {
+  if (works.length === 0) {
+    return `
+      <a href="https://k-luton.com/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="ハウスクリーニング" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">コーポレート</span></div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-lg mb-2">ハウスクリーニング</h3>
+          <p class="text-gray-500 text-sm mb-4">清潔感と信頼感を伝えるコーポレートサイト</p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
+          </div>
+        </div>
+      </a>
+      <a href="https://sample-salon.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="美容室" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">サロン</span></div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-lg mb-2">美容室</h3>
+          <p class="text-gray-500 text-sm mb-4">ブランドの世界観を表現するサロンサイト</p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
+          </div>
+        </div>
+      </a>
+      <a href="https://saas-sample.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&q=80" alt="SaaS" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">LP</span></div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-lg mb-2">SaaS企業 サービスLP</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">LP制作</span>
+            <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">広告連携</span>
+          </div>
+        </div>
+      </a>`
+  }
+
+  return works.map(work => {
+    const tagIds = (work.tags || []).map(t => t.id).join(',')
+    const tagBadge = work.tags?.[0]
+      ? `<div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">${work.tags[0].name}</span></div>`
+      : ''
+    const tagChips = (work.tags || []).map(t =>
+      `<span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full work-tag" data-tag="${t.id}">${t.name}</span>`
+    ).join('')
+    const wrapper = work.url
+      ? `<a href="${work.url}" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block work-card" data-tags="${tagIds}">`
+      : `<div class="bg-white rounded-xl overflow-hidden shadow-md card-hover block work-card" data-tags="${tagIds}">`
+    const wrapperClose = work.url ? '</a>' : '</div>'
+
+    return `${wrapper}
+      <div class="relative">
+        <img src="${work.image?.url ?? ''}?w=600&q=80" alt="${work.companyName}" class="w-full h-52 object-cover">
+        ${tagBadge}
+      </div>
+      <div class="p-6">
+        <h3 class="font-bold text-lg mb-2">${work.companyName}</h3>
+        ${work.description ? `<p class="text-gray-500 text-sm mb-4">${work.description}</p>` : ''}
+        <div class="flex gap-2 flex-wrap">${tagChips}</div>
+      </div>
+    ${wrapperClose}`
+  }).join('')
+}
+
+function renderTagFilters(tags: Tag[]): string {
+  if (tags.length === 0) return ''
+  const buttons = tags.map(t =>
+    `<button class="tag-filter-btn px-4 py-1.5 rounded-full border border-gray-300 text-sm text-gray-600 hover:border-primary hover:text-primary transition" data-tag="${t.id}">${t.name}</button>`
+  ).join('')
+  return `
+    <div class="flex flex-wrap justify-center gap-3 mb-10 fade-up" id="tagFilters">
+      <button class="tag-filter-btn active px-4 py-1.5 rounded-full border border-primary bg-primary text-white text-sm font-bold transition" data-tag="all">すべて</button>
+      ${buttons}
+    </div>`
+}
+
+const app = new Hono<{ Bindings: Env }>()
 
 app.use('/api/*', cors())
 
-app.get('/', (c) => {
+app.get('/', async (c) => {
+  const serviceDomain = c.env?.MICROCMS_SERVICE_DOMAIN ?? ''
+  const apiKey = c.env?.MICROCMS_API_KEY ?? ''
+
+  const [works, tags] = await Promise.all([
+    fetchWorks(serviceDomain, apiKey),
+    fetchTags(serviceDomain, apiKey),
+  ])
+
+  const workCardsHtml = renderWorkCards(works)
+  const tagFiltersHtml = renderTagFilters(tags)
+
   return c.html(`
     <!DOCTYPE html>
     <html lang="ja">
@@ -166,6 +309,91 @@ app.get('/', (c) => {
             }
             .connector:last-child::after { display: none; }
 
+            /* Reasons Carousel */
+            .reasons-carousel-wrap {
+                position: relative;
+                overflow: hidden;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+            .reasons-track {
+                display: flex;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                will-change: transform;
+                cursor: grab;
+                user-select: none;
+            }
+            .reasons-track.dragging {
+                transition: none;
+                cursor: grabbing;
+            }
+            .reasons-card {
+                flex: 0 0 100%;
+                padding: 0 8px;
+            }
+            .reasons-dots {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 20px;
+            }
+            .reasons-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #ddd;
+                transition: background 0.3s, transform 0.3s;
+                cursor: pointer;
+            }
+            .reasons-dot.active {
+                background: #00c8c8;
+                transform: scale(1.25);
+            }
+            .reasons-nav {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border: 2px solid #00c8c8;
+                background: white;
+                color: #00c8c8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+                z-index: 10;
+                font-size: 14px;
+            }
+            .reasons-nav:hover {
+                background: #00c8c8;
+                color: white;
+            }
+            .reasons-nav.prev { left: -18px; }
+            .reasons-nav.next { right: -18px; }
+            @media (min-width: 768px) {
+                .reasons-carousel-wrap {
+                    max-width: 100%;
+                    overflow: visible;
+                }
+                .reasons-track {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 2.5rem;
+                    transform: none !important;
+                    cursor: default;
+                }
+                .reasons-card {
+                    padding: 0;
+                }
+                .reasons-dots,
+                .reasons-nav {
+                    display: none;
+                }
+            }
+
             /* Cards */
             .card-hover {
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -323,7 +551,7 @@ app.get('/', (c) => {
                         <a href="#about" class="text-gray-600 hover:text-primary transition">ABOUT</a>
                         <a href="#service" class="text-gray-600 hover:text-primary transition">SERVICE</a>
                         <a href="#works" class="text-gray-600 hover:text-primary transition">WORKS</a>
-                        <a href="#pricing" class="text-gray-600 hover:text-primary transition">PRICING</a>
+                        <a href="#pricing" class="text-gray-600 hover:text-primary transition">LINE相談</a>
                         <a href="#contact" class="btn-primary px-6 py-2 rounded-full text-white text-sm font-bold">
                             CONTACT
                         </a>
@@ -344,7 +572,7 @@ app.get('/', (c) => {
                 <a href="#about" class="text-gray-700 hover:text-primary transition mobile-link">ABOUT</a>
                 <a href="#service" class="text-gray-700 hover:text-primary transition mobile-link">SERVICE</a>
                 <a href="#works" class="text-gray-700 hover:text-primary transition mobile-link">WORKS</a>
-                <a href="#pricing" class="text-gray-700 hover:text-primary transition mobile-link">PRICING</a>
+                <a href="#pricing" class="text-gray-700 hover:text-primary transition mobile-link">LINE相談</a>
                 <a href="#contact" class="btn-primary px-6 py-3 rounded-full text-white text-center font-bold mobile-link">CONTACT</a>
             </div>
         </div>
@@ -390,33 +618,50 @@ app.get('/', (c) => {
                         <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">WHY CHOOSE US</p>
                         <h2 class="text-3xl font-bold text-gray-800 section-bar">選ばれる<span class="text-primary">3つの理由</span></h2>
                     </div>
-                    <div class="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-                        <!-- 1. 一気通貫 -->
-                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="一気通貫" class="w-full h-48 object-cover">
-                            <div class="p-6 text-center">
-                                <h4 class="font-bold text-lg mb-1">一気通貫</h4>
-                                <p class="text-primary text-sm font-semibold mb-3">思考をそのままコードへ</p>
-                                <p class="text-gray-500 text-sm leading-relaxed">企画・デザイン・実装まで一人で完結。伝達ロスなく、あなたのイメージを正確にコードへ落とし込みます。</p>
+                    <div class="max-w-5xl mx-auto">
+                        <div class="reasons-carousel-wrap">
+                            <button class="reasons-nav prev" id="reasonsPrev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="reasons-nav next" id="reasonsNext"><i class="fas fa-chevron-right"></i></button>
+                            <div class="reasons-track" id="reasonsTrack">
+                                <!-- 1. 一気通貫 -->
+                                <div class="reasons-card">
+                                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="一気通貫" class="w-full h-48 object-cover">
+                                        <div class="p-6 text-center">
+                                            <h4 class="font-bold text-lg mb-1">一気通貫</h4>
+                                            <p class="text-primary text-sm font-semibold mb-3">思考をそのままコードへ</p>
+                                            <p class="text-gray-500 text-sm leading-relaxed">企画・デザイン・実装まで一人で完結。伝達ロスなく、あなたのイメージを正確にコードへ落とし込みます。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 2. 専任対応 -->
+                                <div class="reasons-card">
+                                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                                        <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="専任対応" class="w-full h-48 object-cover">
+                                        <div class="p-6 text-center">
+                                            <h4 class="font-bold text-lg mb-1">専任対応</h4>
+                                            <p class="text-primary text-sm font-semibold mb-3">顔が見える安心感</p>
+                                            <p class="text-gray-500 text-sm leading-relaxed">窓口は最初から最後まで一人。直接やり取りだから意思疎通が早く、適正価格でご提供します。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 3. 柔軟性 -->
+                                <div class="reasons-card">
+                                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="柔軟性" class="w-full h-48 object-cover">
+                                        <div class="p-6 text-center">
+                                            <h4 class="font-bold text-lg mb-1">柔軟性</h4>
+                                            <p class="text-primary text-sm font-semibold mb-3">あなたのビジネスに合わせた最適解</p>
+                                            <p class="text-gray-500 text-sm leading-relaxed">テンプレートに頼らず、急な変更にもスピーディに対応。ビジネスの成長に寄り添います。</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- 2. 専任対応 -->
-                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                            <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80" alt="専任対応" class="w-full h-48 object-cover">
-                            <div class="p-6 text-center">
-                                <h4 class="font-bold text-lg mb-1">専任対応</h4>
-                                <p class="text-primary text-sm font-semibold mb-3">顔が見える安心感</p>
-                                <p class="text-gray-500 text-sm leading-relaxed">窓口は最初から最後まで一人。直接やり取りだから意思疎通が早く、適正価格でご提供します。</p>
-                            </div>
-                        </div>
-                        <!-- 3. 柔軟性 -->
-                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="柔軟性" class="w-full h-48 object-cover">
-                            <div class="p-6 text-center">
-                                <h4 class="font-bold text-lg mb-1">柔軟性</h4>
-                                <p class="text-primary text-sm font-semibold mb-3">あなたのビジネスに合わせた最適解</p>
-                                <p class="text-gray-500 text-sm leading-relaxed">テンプレートに頼らず、急な変更にもスピーディに対応。ビジネスの成長に寄り添います。</p>
-                            </div>
+                        <div class="reasons-dots" id="reasonsDots">
+                            <span class="reasons-dot active" data-index="0"></span>
+                            <span class="reasons-dot" data-index="1"></span>
+                            <span class="reasons-dot" data-index="2"></span>
                         </div>
                     </div>
                 </div>
@@ -432,9 +677,9 @@ app.get('/', (c) => {
                     <p class="text-gray-400 mt-4">お客様のビジネスに最適なWebソリューションを提供します</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto fade-up">
+                <div class="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto fade-up">
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Corporate Site" class="w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Corporate Site" class="w-full h-36 md:h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">コーポレートサイト制作</h3>
                             <p class="text-gray-300 text-sm">企業の信頼性を高めるWebサイト</p>
@@ -442,7 +687,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="EC Site" class="w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="EC Site" class="w-full h-36 md:h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">ECサイト構築</h3>
                             <p class="text-gray-300 text-sm">売上を最大化するオンラインショップ</p>
@@ -450,7 +695,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" alt="Landing Page" class="w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" alt="Landing Page" class="w-full h-36 md:h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">ランディングページ</h3>
                             <p class="text-gray-300 text-sm">CVR最大化を実現するLP制作</p>
@@ -458,7 +703,7 @@ app.get('/', (c) => {
                     </div>
 
                     <div class="group relative rounded-xl overflow-hidden card-hover">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="SEO" class="w-full h-64 object-cover">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="SEO" class="w-full h-36 md:h-64 object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                             <h3 class="text-white font-bold text-xl mb-2">SEO対策</h3>
                             <p class="text-gray-300 text-sm">検索上位表示を目指す施策</p>
@@ -471,347 +716,68 @@ app.get('/', (c) => {
         <!-- Works Section -->
         <section id="works" class="py-24 bg-gray-50">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 fade-up">
+                <div class="text-center mb-10 fade-up">
                     <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">WORKS</p>
                     <h2 class="text-3xl font-bold text-gray-800 section-bar">制作実績（参考サイト）</h2>
                     <p class="text-gray-500 mt-4">これまでに手がけたプロジェクトの一部をご紹介</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 fade-up">
-                    <a href="https://k-luton.com/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="ハウスクリーニング" class="w-full h-52 object-cover">
-                            <div class="absolute top-4 left-4">
-                                <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">コーポレート</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg mb-2">ハウスクリーニング</h3>
-                            <p class="text-gray-500 text-sm mb-4">清潔感と信頼感を伝えるコーポレートサイト</p>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
-                            </div>
-                        </div>
-                    </a>
+                ${tagFiltersHtml}
 
-                    <a href="https://sample-salon.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="美容室" class="w-full h-52 object-cover">
-                            <div class="absolute top-4 left-4">
-                                <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">サロン</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg mb-2">美容室</h3>
-                            <p class="text-gray-500 text-sm mb-4">ブランドの世界観を表現するサロンサイト</p>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">デザイン</span>
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">コーディング</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="https://saas-sample.pages.dev/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&q=80" alt="Work 3" class="w-full h-52 object-cover">
-                            <div class="absolute top-4 left-4">
-                                <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">LP</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg mb-2">SaaS企業 サービスLP</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">LP制作</span>
-                                <span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">広告連携</span>
-                            </div>
-                        </div>
-                    </a>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 fade-up" id="worksGrid">
+                    ${workCardsHtml}
                 </div>
 
                 <div class="text-center mt-12">
                     <a href="#contact" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
-                        すべての実績を見る <i class="fas fa-arrow-right"></i>
+                        お問い合わせはこちら <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- Pricing Section (Dark) -->
+        <!-- LINE Consultation Section -->
         <section id="pricing" class="py-24" style="background:#1a1a2e;">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 fade-up">
-                    <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">PRICING</p>
-                    <h2 class="text-3xl font-bold text-white section-bar">料金プラン</h2>
-                    <p class="text-gray-400 mt-4">明瞭な料金体系で安心してご依頼いただけます</p>
-                </div>
+                <div class="text-center fade-up">
+                    <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">CONTACT FREE</p>
+                    <h2 class="text-3xl font-bold text-white section-bar mb-6">まずは無料で<br class="md:hidden">相談・お見積もり</h2>
+                    <p class="text-gray-400 mt-6 mb-12 text-lg leading-relaxed">
+                        料金やご要望はお気軽にLINEでご相談ください。<br>
+                        見積もりも無料で対応いたします。
+                    </p>
 
-                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-up mt-12">
-                    <!-- ライトプラン -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-seedling text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">LIGHT</h3>
-                            <p class="text-gray-400 text-sm">ライトプラン</p>
+                    <div class="max-w-sm mx-auto bg-white/5 rounded-2xl p-10 border border-white/10">
+                        <div class="flex items-center justify-center w-20 h-20 rounded-full mx-auto mb-6" style="background:#06C755;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-12 h-12" fill="white">
+                                <path d="M24 4C13 4 4 11.8 4 21.4c0 5.8 3.5 10.9 8.9 14.1-.4 1.4-1.3 5.1-1.5 5.9-.2 1 .4 1 .8.7.3-.2 4.7-3.2 6.6-4.5.7.1 1.5.1 2.2.1 11 0 20-7.8 20-17.4C44 11.8 35 4 24 4z"/>
+                            </svg>
                         </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥100,000</span>
-                            <span class="text-gray-400">〜</span>
-                        </div>
-                        <div class="mb-6">
-                            <div class="flex items-center gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-clock text-primary text-xs"></i>
-                                <span>納期：着手から約2週間</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-file-alt text-primary text-xs"></i>
-                                <span>内容：1ページ完結（LP形式）</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                起業直後や名刺代わりのWebサイトを早期に立ち上げたい方に最適。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
+                        <p class="text-white font-bold text-xl mb-2">LINEで無料相談</p>
+                        <p class="text-gray-400 text-sm mb-8">友だち追加するだけでOK。<br>気軽にメッセージしてください。</p>
+                        <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer"
+                            class="flex items-center justify-center gap-3 w-full py-4 rounded-full font-bold text-white text-lg transition hover:opacity-90 hover:-translate-y-1 shadow-lg"
+                            style="background:#06C755;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6" fill="white">
+                                <path d="M24 4C13 4 4 11.8 4 21.4c0 5.8 3.5 10.9 8.9 14.1-.4 1.4-1.3 5.1-1.5 5.9-.2 1 .4 1 .8.7.3-.2 4.7-3.2 6.6-4.5.7.1 1.5.1 2.2.1 11 0 20-7.8 20-17.4C44 11.8 35 4 24 4z"/>
+                            </svg>
+                            友だち追加して相談する
                         </a>
                     </div>
 
-                    <!-- スタンダードプラン (推奨 - 黄色ボーダーで強調) -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white relative transform md:-translate-y-4" style="border: 3px solid #facc15;">
-                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
-                            <i class="fas fa-star mr-1"></i>推奨
+                    <div class="flex flex-col md:flex-row justify-center gap-6 mt-12 text-sm text-gray-400">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-primary"></i>
+                            <span>相談・見積もり完全無料</span>
                         </div>
-                        <div class="text-center mb-6 mt-2">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-gem text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">STANDARD</h3>
-                            <p class="text-gray-400 text-sm">スタンダードプラン</p>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-primary"></i>
+                            <span>即日返信対応</span>
                         </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥250,000</span>
-                            <span class="text-gray-400">〜</span>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-primary"></i>
+                            <span>押し売り一切なし</span>
                         </div>
-                        <div class="mb-4">
-                            <div class="flex items-center gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-clock text-primary text-xs"></i>
-                                <span>納期：着手から約1ヶ月</span>
-                            </div>
-                            <div class="flex items-start gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-file-alt text-primary text-xs mt-1"></i>
-                                <span>基本5ページまで<br><span class="text-xs text-gray-500">(TOP / サービス紹介 / 実績一覧 / 会社概要 / お問い合わせ)</span></span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-3 mb-4 text-xs text-gray-400 space-y-1">
-                            <p><i class="fas fa-plus-circle mr-1 text-primary"></i>CMS導入：+¥50,000</p>
-                            <p><i class="fas fa-plus-circle mr-1 text-primary"></i>ページ追加：¥30,000〜50,000/1ページ</p>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                事業の信頼性確立・自社情報発信を志向する方に最適。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
-                        </a>
-                    </div>
-
-                    <!-- フルカスタムプラン -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-crown text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">FULL CUSTOM</h3>
-                            <p class="text-gray-400 text-sm">フルカスタムプラン</p>
-                        </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥500,000</span>
-                            <span class="text-gray-400">〜</span>
-                        </div>
-                        <div class="mb-4">
-                            <div class="flex items-center gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-clock text-primary text-xs"></i>
-                                <span>納期：2ヶ月〜（要相談）</span>
-                            </div>
-                            <div class="flex items-start gap-2 text-sm text-gray-300 mb-2">
-                                <i class="fas fa-file-alt text-primary text-xs mt-1"></i>
-                                <span>10ページ以上 + CMS標準実装 + 独自アニメーション演出</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-3 mb-4 text-xs text-gray-400 space-y-1">
-                            <p><i class="fas fa-cog mr-1 text-primary"></i>Shopify連携、ヘッドレス構成等 高度カスタマイズ対応</p>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                ブランディング徹底・競合差別化を目指すスタートアップ・企業に最適。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 備考 -->
-                <div class="max-w-4xl mx-auto mt-10 fade-up">
-                    <div class="bg-dark-card/50 rounded-xl p-6 text-gray-400 text-sm space-y-2">
-                        <p class="font-bold text-white text-xs mb-3"><i class="fas fa-info-circle text-primary mr-1"></i>備考</p>
-                        <p>・表示価格は最低目安です。ページ数・特殊機能により変動します。</p>
-                        <p>・納期は素材揃い次第の着手となります。</p>
-                        <p>・特急案件は制作費の20%〜の追加料金が適用されます。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Maintenance Plan Section (Dark) -->
-        <section class="py-24" style="background:#1a1a2e;">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16 fade-up">
-                    <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">MAINTENANCE</p>
-                    <h2 class="text-3xl font-bold text-white section-bar">保守運用プラン</h2>
-                    <p class="text-gray-400 mt-4">サイト公開後も安心してお任せください</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-up mt-12">
-                    <!-- ミニマムプラン -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-shield-alt text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">MINIMUM</h3>
-                            <p class="text-gray-400 text-sm">ミニマムプラン</p>
-                            <p class="text-gray-500 text-xs mt-1">サイトの健康診断</p>
-                        </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥5,000</span>
-                            <span class="text-gray-400">/月</span>
-                        </div>
-                        <div class="space-y-3 mb-6 text-sm">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">ドメイン・サーバーの維持管理</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">セキュリティ監視・システム保護</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">データの定期バックアップ</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">Web相談窓口（月1回まで）</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                まずは作ったサイトを安全に維持したい方に最適な、基本の保険プランです。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
-                        </a>
-                    </div>
-
-                    <!-- スタンダードプラン (推奨) -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white relative transform md:-translate-y-4" style="border: 3px solid #facc15;">
-                        <div class="bg-yellow-400 text-gray-900 text-xs font-bold px-5 py-1.5 rounded-full absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 shadow-md">
-                            <i class="fas fa-star mr-1"></i>一番人気
-                        </div>
-                        <div class="text-center mb-6 mt-2">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-sync-alt text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">STANDARD</h3>
-                            <p class="text-gray-400 text-sm">スタンダードプラン</p>
-                            <p class="text-gray-500 text-xs mt-1">更新・サポート</p>
-                        </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥15,000</span>
-                            <span class="text-gray-400">/月</span>
-                        </div>
-                        <div class="space-y-3 mb-6 text-sm">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">ミニマムプランの全内容</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">月1時間の作業枠（更新代行）</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">簡易アクセスレポート</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">優先不具合対応</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                常に情報を新しく保ち、集客に活かしたい店舗や個人事業主様向けの推奨プランです。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
-                        </a>
-                    </div>
-
-                    <!-- プレミアムプラン -->
-                    <div class="pricing-card bg-dark-card rounded-xl p-8 text-white">
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-                                <i class="fas fa-chart-line text-primary text-2xl"></i>
-                            </div>
-                            <h3 class="font-poppins font-bold text-xl mb-1">PREMIUM</h3>
-                            <p class="text-gray-400 text-sm">プレミアムプラン</p>
-                            <p class="text-gray-500 text-xs mt-1">改善・伴走</p>
-                        </div>
-                        <div class="text-center mb-6">
-                            <span class="text-3xl font-bold">¥30,000</span>
-                            <span class="text-gray-400">〜/月</span>
-                        </div>
-                        <div class="space-y-3 mb-6 text-sm">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">スタンダードプランの全内容</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">詳細なアクセス解析（GA4）</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">隔月のオンライン個別相談</span>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check text-primary text-xs mt-1"></i>
-                                <span class="text-gray-300">広告運用・マーケティング準備支援</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 rounded-lg p-4 mb-6">
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                <i class="fas fa-user text-primary mr-1"></i>
-                                データを分析して売上を伸ばしたい、将来的に広告も出したい方向けの攻めのプランです。
-                            </p>
-                        </div>
-                        <a href="#contact" class="block w-full border-2 border-primary text-primary py-3 rounded-full font-bold text-center hover:bg-primary hover:text-white transition">
-                            相談する
-                        </a>
                     </div>
                 </div>
             </div>
@@ -1037,6 +1003,100 @@ app.get('/', (c) => {
         </footer>
 
         <script>
+            // Tag filter
+            (function() {
+                const filterBtns = document.querySelectorAll('.tag-filter-btn');
+                if (!filterBtns.length) return;
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tag = this.dataset.tag;
+                        filterBtns.forEach(b => {
+                            b.classList.remove('active', 'bg-primary', 'text-white', 'border-primary', 'font-bold');
+                            b.classList.add('border-gray-300', 'text-gray-600');
+                        });
+                        this.classList.add('active', 'bg-primary', 'text-white', 'border-primary', 'font-bold');
+                        this.classList.remove('border-gray-300', 'text-gray-600');
+
+                        document.querySelectorAll('.work-card').forEach(card => {
+                            if (tag === 'all') {
+                                card.style.display = '';
+                            } else {
+                                const cardTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+                                card.style.display = cardTags.includes(tag) ? '' : 'none';
+                            }
+                        });
+                    });
+                });
+            })();
+
+            // Reasons Carousel
+            (function() {
+                const track = document.getElementById('reasonsTrack');
+                const dots = document.querySelectorAll('#reasonsDots .reasons-dot');
+                const total = 3;
+                let current = 0;
+                let startX = 0;
+                let dragDelta = 0;
+                let isDragging = false;
+
+                function isMobile() {
+                    return window.innerWidth < 768;
+                }
+
+                function goTo(index) {
+                    if (!isMobile()) return;
+                    current = (index + total) % total;
+                    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                }
+
+                document.getElementById('reasonsPrev').addEventListener('click', () => goTo(current - 1));
+                document.getElementById('reasonsNext').addEventListener('click', () => goTo(current + 1));
+                dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
+
+                // Touch
+                track.addEventListener('touchstart', e => {
+                    if (!isMobile()) return;
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                }, { passive: true });
+                track.addEventListener('touchmove', e => {
+                    if (!isMobile() || !isDragging) return;
+                    dragDelta = e.touches[0].clientX - startX;
+                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                }, { passive: true });
+                track.addEventListener('touchend', () => {
+                    if (!isMobile()) return;
+                    isDragging = false;
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
+                });
+
+                // Mouse drag
+                track.addEventListener('mousedown', e => {
+                    if (!isMobile()) return;
+                    startX = e.clientX;
+                    isDragging = true;
+                    track.classList.add('dragging');
+                });
+                window.addEventListener('mousemove', e => {
+                    if (!isDragging || !isMobile()) return;
+                    dragDelta = e.clientX - startX;
+                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                });
+                window.addEventListener('mouseup', () => {
+                    if (!isDragging || !isMobile()) return;
+                    isDragging = false;
+                    track.classList.remove('dragging');
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
+                });
+            })();
+
             // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
