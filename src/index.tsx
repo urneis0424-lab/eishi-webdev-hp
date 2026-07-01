@@ -826,25 +826,7 @@ app.get('/', async (c) => {
                         友だち追加して相談する
                     </a>
 
-                    <div class="max-w-sm mx-auto bg-white/5 rounded-2xl p-10 border border-white/10">
-                        <div class="flex items-center justify-center w-20 h-20 rounded-full mx-auto mb-6" style="background:#06C755;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-12 h-12" fill="white">
-                                <path d="M24 4C13 4 4 11.8 4 21.4c0 5.8 3.5 10.9 8.9 14.1-.4 1.4-1.3 5.1-1.5 5.9-.2 1 .4 1 .8.7.3-.2 4.7-3.2 6.6-4.5.7.1 1.5.1 2.2.1 11 0 20-7.8 20-17.4C44 11.8 35 4 24 4z"/>
-                            </svg>
-                        </div>
-                        <p class="text-white font-bold text-xl mb-2">LINEで無料相談</p>
-                        <p class="text-gray-400 text-sm mb-8">友だち追加するだけでOK。<br>気軽にメッセージしてください。</p>
-                        <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center justify-center gap-3 w-full py-4 rounded-full font-bold text-white text-lg transition hover:opacity-90 hover:-translate-y-1 shadow-lg"
-                            style="background:#06C755;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6" fill="white">
-                                <path d="M24 4C13 4 4 11.8 4 21.4c0 5.8 3.5 10.9 8.9 14.1-.4 1.4-1.3 5.1-1.5 5.9-.2 1 .4 1 .8.7.3-.2 4.7-3.2 6.6-4.5.7.1 1.5.1 2.2.1 11 0 20-7.8 20-17.4C44 11.8 35 4 24 4z"/>
-                            </svg>
-                            友だち追加して相談する
-                        </a>
-                    </div>
-
-                    <div class="flex flex-col md:flex-row justify-center gap-6 mt-12 text-sm text-gray-400">
+                    <div class="flex flex-col md:flex-row justify-center gap-6 mt-4 text-sm text-gray-400">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-check-circle text-primary"></i>
                             <span>相談・見積もり完全無料</span>
