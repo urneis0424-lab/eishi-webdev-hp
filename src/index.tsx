@@ -8,7 +8,8 @@ type Env = {
 
 type Tag = {
   id: string
-  name: string
+  name?: string
+  tags?: string
 }
 
 type Work = {
@@ -48,25 +49,29 @@ async function fetchTags(serviceDomain: string, apiKey: string): Promise<Tag[]> 
   }
 }
 
+function tagLabel(t: Tag): string {
+  return t.name ?? t.tags ?? ''
+}
+
 function renderWorkCards(works: Work[]): string {
   if (works.length === 0) {
-    return `<p class="text-center text-gray-400 col-span-full py-12">準備中です。近日公開予定。</p>`
+    return `<div class="works-card-slide"><p class="text-center text-gray-400 py-12">準備中です。近日公開予定。</p></div>`
   }
 
   return works.map(work => {
     const tagIds = (work.tags || []).map(t => t.id).join(',')
     const tagBadge = work.tags?.[0]
-      ? `<div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">${work.tags[0].name}</span></div>`
+      ? `<div class="absolute top-4 left-4"><span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">${tagLabel(work.tags[0])}</span></div>`
       : ''
     const tagChips = (work.tags || []).map(t =>
-      `<span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full work-tag" data-tag="${t.id}">${t.name}</span>`
+      `<span class="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full work-tag" data-tag="${t.id}">${tagLabel(t)}</span>`
     ).join('')
-    const wrapper = work.url
+    const inner = work.url
       ? `<a href="${work.url}" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl overflow-hidden shadow-md card-hover block work-card" data-tags="${tagIds}">`
       : `<div class="bg-white rounded-xl overflow-hidden shadow-md card-hover block work-card" data-tags="${tagIds}">`
-    const wrapperClose = work.url ? '</a>' : '</div>'
+    const innerClose = work.url ? '</a>' : '</div>'
 
-    return `${wrapper}
+    return `<div class="works-card-slide">${inner}
       <div class="relative">
         <img src="${work.image?.url ?? ''}?w=600&q=80" alt="${work.companyName}" class="w-full h-52 object-cover">
         ${tagBadge}
@@ -76,14 +81,14 @@ function renderWorkCards(works: Work[]): string {
         ${work.description ? `<p class="text-gray-500 text-sm mb-4">${work.description}</p>` : ''}
         <div class="flex gap-2 flex-wrap">${tagChips}</div>
       </div>
-    ${wrapperClose}`
+    ${innerClose}</div>`
   }).join('')
 }
 
 function renderTagFilters(tags: Tag[]): string {
   if (tags.length === 0) return ''
   const buttons = tags.map(t =>
-    `<button class="tag-filter-btn px-4 py-1.5 rounded-full border border-gray-300 text-sm text-gray-600 hover:border-primary hover:text-primary transition" data-tag="${t.id}">${t.name}</button>`
+    `<button class="tag-filter-btn px-4 py-1.5 rounded-full border border-gray-300 text-sm text-gray-600 hover:border-primary hover:text-primary transition" data-tag="${t.id}">${tagLabel(t)}</button>`
   ).join('')
   return `
     <div class="flex flex-wrap justify-center gap-3 mb-10 fade-up" id="tagFilters">
@@ -267,6 +272,59 @@ app.get('/', async (c) => {
                 transform: translateY(-50%);
             }
             .connector:last-child::after { display: none; }
+
+            /* Works Carousel */
+            .works-carousel-wrap {
+                position: relative;
+                overflow: hidden;
+            }
+            .works-track {
+                display: flex;
+                transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                will-change: transform;
+                cursor: grab;
+                user-select: none;
+                touch-action: pan-y;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .works-track.dragging {
+                transition: none;
+                cursor: grabbing;
+            }
+            .works-card-slide {
+                flex: 0 0 100%;
+                padding: 0;
+            }
+            .works-dots {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 20px;
+            }
+            .works-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #ddd;
+                transition: background 0.3s, transform 0.3s;
+                cursor: pointer;
+            }
+            .works-dot.active {
+                background: #00c8c8;
+                transform: scale(1.25);
+            }
+            @media (min-width: 768px) {
+                .works-carousel-wrap { overflow: visible; }
+                .works-track {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 2rem;
+                    transform: none !important;
+                    cursor: default;
+                }
+                .works-card-slide { padding: 0; flex: none; }
+                .works-dots { display: none; }
+            }
 
             /* Service Carousel */
             .service-carousel-wrap {
@@ -726,13 +784,18 @@ app.get('/', async (c) => {
                 <div class="text-center mb-10 fade-up">
                     <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">WORKS</p>
                     <h2 class="text-3xl font-bold text-gray-800 section-bar">制作実績（参考サイト）</h2>
-                    <p class="text-gray-500 mt-4">これまでに手がけたプロジェクトの一部をご紹介</p>
+                    <p class="text-gray-500 mt-4 whitespace-nowrap text-sm md:text-base">これまでに手がけたプロジェクトの一部をご紹介</p>
                 </div>
 
                 ${tagFiltersHtml}
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 fade-up" id="worksGrid">
-                    ${workCardsHtml}
+                <div class="fade-up">
+                    <div class="works-carousel-wrap">
+                        <div class="works-track" id="worksTrack">
+                            ${workCardsHtml}
+                        </div>
+                    </div>
+                    <div class="works-dots" id="worksDots"></div>
                 </div>
 
                 <div class="text-center mt-12">
@@ -887,6 +950,90 @@ app.get('/', async (c) => {
         </footer>
 
         <script>
+            // Works Carousel
+            (function() {
+                const track = document.getElementById('worksTrack');
+                const dotsWrap = document.getElementById('worksDots');
+                if (!track) return;
+                const slides = track.querySelectorAll('.works-card-slide');
+                const total = slides.length;
+                if (total <= 1) return;
+                let current = 0;
+                let startX = 0;
+                let dragDelta = 0;
+                let isDragging = false;
+                let rafId = null;
+
+                // ドット生成
+                slides.forEach((_, i) => {
+                    const d = document.createElement('span');
+                    d.className = 'works-dot' + (i === 0 ? ' active' : '');
+                    d.dataset.index = String(i);
+                    d.addEventListener('click', () => goTo(i));
+                    dotsWrap.appendChild(d);
+                });
+
+                function isMobile() { return window.innerWidth < 768; }
+
+                function goTo(index) {
+                    if (!isMobile()) return;
+                    current = (index + total) % total;
+                    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                    dotsWrap.querySelectorAll('.works-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+                }
+
+                function updateDragPosition() {
+                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                    rafId = null;
+                }
+
+                function queueDragUpdate() {
+                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
+                }
+
+                track.addEventListener('touchstart', e => {
+                    if (!isMobile()) return;
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    track.classList.add('dragging');
+                }, { passive: true });
+                track.addEventListener('touchmove', e => {
+                    if (!isMobile() || !isDragging) return;
+                    dragDelta = e.touches[0].clientX - startX;
+                    queueDragUpdate();
+                }, { passive: true });
+                track.addEventListener('touchend', () => {
+                    if (!isMobile()) return;
+                    isDragging = false;
+                    track.classList.remove('dragging');
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
+                });
+
+                track.addEventListener('mousedown', e => {
+                    if (!isMobile()) return;
+                    startX = e.clientX;
+                    isDragging = true;
+                    track.classList.add('dragging');
+                });
+                window.addEventListener('mousemove', e => {
+                    if (!isDragging || !isMobile()) return;
+                    dragDelta = e.clientX - startX;
+                    queueDragUpdate();
+                });
+                window.addEventListener('mouseup', () => {
+                    if (!isDragging || !isMobile()) return;
+                    isDragging = false;
+                    track.classList.remove('dragging');
+                    if (dragDelta < -50) goTo(current + 1);
+                    else if (dragDelta > 50) goTo(current - 1);
+                    else goTo(current);
+                    dragDelta = 0;
+                });
+            })();
+
             // Tag filter
             (function() {
                 const filterBtns = document.querySelectorAll('.tag-filter-btn');
