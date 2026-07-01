@@ -652,8 +652,8 @@ app.get('/', async (c) => {
                         <a href="#service" class="text-gray-600 hover:text-primary transition">SERVICE</a>
                         <a href="#works" class="text-gray-600 hover:text-primary transition">WORKS</a>
                         <a href="#pricing" class="text-gray-600 hover:text-primary transition">LINE相談</a>
-                        <a href="#contact" class="btn-primary px-6 py-2 rounded-full text-white text-sm font-bold">
-                            CONTACT
+                        <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer" class="btn-primary px-6 py-2 rounded-full text-white text-sm font-bold">
+                            LINE相談
                         </a>
                     </div>
                     <button id="menuBtn" class="md:hidden text-gray-700 text-2xl">
@@ -673,7 +673,7 @@ app.get('/', async (c) => {
                 <a href="#service" class="text-gray-700 hover:text-primary transition mobile-link">SERVICE</a>
                 <a href="#works" class="text-gray-700 hover:text-primary transition mobile-link">WORKS</a>
                 <a href="#pricing" class="text-gray-700 hover:text-primary transition mobile-link">LINE相談</a>
-                <a href="#contact" class="btn-primary px-6 py-3 rounded-full text-white text-center font-bold mobile-link">CONTACT</a>
+                <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer" class="btn-primary px-6 py-3 rounded-full text-white text-center font-bold mobile-link">LINE相談</a>
             </div>
         </div>
 
@@ -695,8 +695,8 @@ app.get('/', async (c) => {
                             </p>
                         </div>
                         <div class="flex justify-center md:justify-start hero-button">
-                            <a href="#contact" class="bg-blue-900 hover:bg-blue-800 text-white px-10 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
-                                <i class="fas fa-envelope"></i> 無料相談する
+                            <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer" class="bg-blue-900 hover:bg-blue-800 text-white px-10 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center gap-2 transition shadow-lg">
+                                <i class="fab fa-line"></i> 無料相談する
                             </a>
                         </div>
                     </div>
@@ -850,8 +850,8 @@ app.get('/', async (c) => {
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="#contact" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
-                        お問い合わせはこちら <i class="fas fa-arrow-right"></i>
+                    <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                        <i class="fab fa-line"></i> LINEで相談する
                     </a>
                 </div>
             </div>
@@ -945,8 +945,8 @@ app.get('/', async (c) => {
                         ご相談・お見積もりは無料で対応いたします。<br>
                         まずはお気軽にお問い合わせください。
                     </p>
-                    <a href="#contact" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
-                        <i class="fas fa-envelope"></i> 無料で相談する
+                    <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer" class="btn-primary px-10 py-4 rounded-full font-bold text-lg inline-flex items-center gap-2">
+                        <i class="fab fa-line"></i> LINEで無料相談する
                     </a>
                 </div>
             </div>
