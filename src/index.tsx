@@ -193,6 +193,46 @@ app.get('/', async (c) => {
           }
         }
         </script>
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "石川県でのWeb制作はどこに依頼すればいいですか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "石川県（金沢・小松・加賀）を拠点に活動するフリーランスのWeb制作者、Eishi Uranoにお任せください。採用サイト・集客サイト・コーポレートサイトの制作から運用まで、格安料金で対応しています。LINEから無料で相談・お見積りが可能です。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "ホームページ制作の料金はどのくらいですか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "フリーランスならではの低コスト・格安料金でご提供しています。サイトの規模や要件によって異なるため、まずはLINEにてお気軽にご相談ください。無料でお見積りいたします。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "採用サイトの制作は依頼できますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "はい、採用サイトの制作に対応しています。採用コストを下げるためのWebサイト設計・制作から、求職者への訴求コンテンツ作成まで一貫してサポートします。石川県内の企業様からのご依頼も多数承っています。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "制作後の運用・保守もお願いできますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "はい、制作後の運用・保守にも対応しています。コンテンツ更新、不具合対応、サイト改善など継続的にサポートします。運用コストを抑えながら効果的なWeb活用を実現します。"
+              }
+            }
+          ]
+        }
+        </script>
         <script>
           tailwind.config = {
             theme: {
