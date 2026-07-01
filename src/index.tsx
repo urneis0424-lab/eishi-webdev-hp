@@ -121,9 +121,9 @@ app.get('/', async (c) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- SEO Meta Tags -->
-        <title>Eishi Urano | Web Developer - フリーランスWeb制作</title>
-        <meta name="description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。コーポレートサイト、ECサイト、ランディングページの制作から保守運用まで対応。">
-        <meta name="keywords" content="Web制作,フリーランス,Webデベロッパー,コーポレートサイト,ECサイト,LP制作,Cloudflare,Hono">
+        <title>石川県のWeb制作フリーランス | 採用・集客・運用コストを最適化 | Eishi Urano</title>
+        <meta name="description" content="石川県（金沢・小松・加賀）のWeb制作はお任せください。採用サイト・集客サイト・コーポレートサイトの制作から運用まで、フリーランスならではのスピードと低コストで対応します。">
+        <meta name="keywords" content="Web制作 石川県,ホームページ制作 金沢,Web制作 フリーランス 石川,採用サイト 石川県,集客 ホームページ 金沢,コーポレートサイト 石川,Web制作 小松,ホームページ 加賀">
         <meta name="author" content="Eishi Urano">
         
         <!-- Favicon -->
@@ -137,8 +137,8 @@ app.get('/', async (c) => {
         <!-- Open Graph (OGP) Tags -->
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Eishi Urano | Web Developer">
-        <meta property="og:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
-        <meta property="og:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。コーポレートサイト、ECサイト、ランディングページの制作から保守運用まで対応。">
+        <meta property="og:title" content="石川県のWeb制作フリーランス | 採用・集客・運用コストを最適化 | Eishi Urano">
+        <meta property="og:description" content="石川県（金沢・小松・加賀）のWeb制作はお任せください。採用サイト・集客サイト・コーポレートサイトの制作から運用まで、フリーランスならではのスピードと低コストで対応します。">
         <meta property="og:url" content="https://eishi-webdev-hp.pages.dev/">
         <meta property="og:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg?v=2">
         <meta property="og:image:width" content="1200">
@@ -147,8 +147,8 @@ app.get('/', async (c) => {
         
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Eishi Urano | Web Developer - フリーランスWeb制作">
-        <meta name="twitter:description" content="フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供。">
+        <meta name="twitter:title" content="石川県のWeb制作フリーランス | 採用・集客・運用コストを最適化 | Eishi Urano">
+        <meta name="twitter:description" content="石川県（金沢・小松・加賀）のWeb制作はお任せください。採用サイト・集客サイト・コーポレートサイトの制作から運用まで対応します。">
         <meta name="twitter:image" content="https://eishi-webdev-hp.pages.dev/og-image.jpg?v=2">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
@@ -166,23 +166,30 @@ app.get('/', async (c) => {
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Eishi Urano",
-          "jobTitle": "Web Developer",
-          "description": "フリーランスとして、お客様のビジネスを成功に導くWebサイト制作を提供しています。",
+          "@type": "LocalBusiness",
+          "name": "Eishi Urano Web制作",
+          "description": "石川県を中心に、採用・集客・運用コストを最適化するWebサイト制作を提供するフリーランスのWeb制作者。",
           "url": "https://eishi-webdev-hp.pages.dev/",
-          "knowsAbout": ["Web Development", "Frontend Development", "Cloudflare Pages", "Hono Framework", "TypeScript"],
-          "offers": {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Web制作サービス",
-              "description": "コーポレートサイト、ECサイト、ランディングページの制作",
-              "provider": {
-                "@type": "Person",
-                "name": "Eishi Urano"
-              }
-            }
+          "areaServed": [
+            { "@type": "City", "name": "金沢市" },
+            { "@type": "City", "name": "小松市" },
+            { "@type": "City", "name": "加賀市" },
+            { "@type": "AdministrativeArea", "name": "石川県" }
+          ],
+          "founder": {
+            "@type": "Person",
+            "name": "Eishi Urano",
+            "jobTitle": "Webデザイナー・エンジニア",
+            "knowsAbout": ["Web制作", "採用サイト", "集客サイト", "コーポレートサイト", "Cloudflare Pages", "TypeScript"]
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Web制作サービス",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "採用サイト制作" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "集客・コーポレートサイト制作" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "サイト運用・保守" } }
+            ]
           }
         }
         </script>
