@@ -123,7 +123,7 @@ app.get('/', async (c) => {
         <!-- SEO Meta Tags -->
         <title>石川県のWeb制作フリーランス | 採用・集客・運用コストを最適化 | Eishi Urano</title>
         <meta name="description" content="石川県（金沢・小松・加賀）のWeb制作はお任せください。採用サイト・集客サイト・コーポレートサイトの制作から運用まで、フリーランスならではのスピードと低コストで対応します。">
-        <meta name="keywords" content="Web制作 石川県,ホームページ制作 金沢,Web制作 フリーランス 石川,採用サイト 石川県,集客 ホームページ 金沢,コーポレートサイト 石川,Web制作 小松,ホームページ 加賀">
+        <meta name="keywords" content="Web制作 石川県,ホームページ制作 金沢,ホームページ制作 格安,Web制作 フリーランス 石川,採用サイト 制作,採用サイト 石川県,集客 ホームページ 金沢,コーポレートサイト 石川,Web制作 小松,ホームページ 加賀">
         <meta name="author" content="Eishi Urano">
         
         <!-- Favicon -->
