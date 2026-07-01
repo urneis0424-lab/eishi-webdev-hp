@@ -326,8 +326,6 @@ app.get('/', async (c) => {
             .reasons-carousel-wrap {
                 position: relative;
                 overflow: hidden;
-                max-width: 520px;
-                margin: 0 auto;
             }
             .reasons-track {
                 display: flex;
@@ -364,30 +362,7 @@ app.get('/', async (c) => {
                 background: #00c8c8;
                 transform: scale(1.25);
             }
-            .reasons-nav {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                border: 2px solid #00c8c8;
-                background: white;
-                color: #00c8c8;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.2s;
-                z-index: 10;
-                font-size: 14px;
-            }
-            .reasons-nav:hover {
-                background: #00c8c8;
-                color: white;
-            }
-            .reasons-nav.prev { left: -18px; }
-            .reasons-nav.next { right: -18px; }
+            .reasons-nav { display: none; }
             @media (min-width: 768px) {
                 .reasons-carousel-wrap {
                     max-width: 100%;
