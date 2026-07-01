@@ -101,6 +101,10 @@ const app = new Hono<{ Bindings: Env }>()
 
 app.use('/api/*', cors())
 
+app.get('/google8cbf369e317b0deb.html', (c) => {
+  return c.text('google-site-verification: google8cbf369e317b0deb.html')
+})
+
 app.get('/', async (c) => {
   const serviceDomain = c.env?.MICROCMS_SERVICE_DOMAIN ?? ''
   const apiKey = c.env?.MICROCMS_API_KEY ?? ''
