@@ -287,8 +287,8 @@ app.get('/', async (c) => {
                 cursor: grabbing;
             }
             .service-card-slide {
-                flex: 0 0 94%;
-                padding: 0 6px;
+                flex: 0 0 100%;
+                padding: 0;
             }
             .service-dots {
                 display: flex;
@@ -308,27 +308,7 @@ app.get('/', async (c) => {
                 background: #00c8c8;
                 transform: scale(1.25);
             }
-            .service-nav {
-                position: absolute;
-                top: 40%;
-                transform: translateY(-50%);
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                border: 2px solid #00c8c8;
-                background: rgba(255,255,255,0.1);
-                color: #00c8c8;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.2s;
-                z-index: 10;
-                font-size: 14px;
-            }
-            .service-nav:hover { background: #00c8c8; color: #1a1a2e; }
-            .service-nav.prev { left: 0; }
-            .service-nav.next { right: 0; }
+            .service-nav { display: none; }
             @media (min-width: 768px) {
                 .service-carousel-wrap { overflow: visible; }
                 .service-track {
@@ -712,7 +692,7 @@ app.get('/', async (c) => {
                     <p class="text-gray-400 mt-4">お客様のビジネスに最適なWebソリューションを提供します</p>
                 </div>
 
-                <div class="max-w-4xl mx-auto px-8 fade-up">
+                <div class="max-w-4xl mx-auto fade-up">
                     <div class="service-carousel-wrap">
                         <button class="service-nav prev" id="servicePrev"><i class="fas fa-chevron-left"></i></button>
                         <button class="service-nav next" id="serviceNext"><i class="fas fa-chevron-right"></i></button>
@@ -794,10 +774,19 @@ app.get('/', async (c) => {
                 <div class="text-center fade-up">
                     <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-2">CONTACT FREE</p>
                     <h2 class="text-3xl font-bold text-white section-bar mb-6">まずは無料で<br class="md:hidden">相談・お見積もり</h2>
-                    <p class="text-gray-400 mt-6 mb-12 text-lg leading-relaxed">
+                    <p class="text-gray-400 mt-6 mb-8 text-lg leading-relaxed">
                         料金やご要望はお気軽にLINEでご相談ください。<br>
                         見積もりも無料で対応いたします。
                     </p>
+
+                    <a href="https://lin.ee/ynowpvc" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full font-bold text-white text-lg transition hover:opacity-90 hover:-translate-y-1 shadow-lg mb-12"
+                        style="background:#06C755;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6" fill="white">
+                            <path d="M24 4C13 4 4 11.8 4 21.4c0 5.8 3.5 10.9 8.9 14.1-.4 1.4-1.3 5.1-1.5 5.9-.2 1 .4 1 .8.7.3-.2 4.7-3.2 6.6-4.5.7.1 1.5.1 2.2.1 11 0 20-7.8 20-17.4C44 11.8 35 4 24 4z"/>
+                        </svg>
+                        友だち追加して相談する
+                    </a>
 
                     <div class="max-w-sm mx-auto bg-white/5 rounded-2xl p-10 border border-white/10">
                         <div class="flex items-center justify-center w-20 h-20 rounded-full mx-auto mb-6" style="background:#06C755;">
@@ -1091,7 +1080,7 @@ app.get('/', async (c) => {
                 let dragDelta = 0;
                 let isDragging = false;
                 let rafId = null;
-                const slideWidth = 94;
+                const slideWidth = 100;
 
                 function isMobile() {
                     return window.innerWidth < 768;
