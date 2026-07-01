@@ -983,6 +983,71 @@ app.get('/', async (c) => {
         </footer>
 
         <script>
+            // 共通カルーセル関数
+            function makeCarousel(trackEl, dotsSelector, total, opts) {
+                if (!trackEl) return;
+                let current = 0, startX = 0, dragDelta = 0, isDragging = false, rafId = null;
+
+                function isMobile() { return window.innerWidth < 768; }
+
+                function updateDots() {
+                    document.querySelectorAll(dotsSelector).forEach((d, i) =>
+                        d.classList.toggle('active', i === current));
+                }
+
+                function goTo(index) {
+                    if (!isMobile()) return;
+                    current = ((index % total) + total) % total;
+                    trackEl.style.transform = 'translateX(-' + (current * 100) + '%)';
+                    updateDots();
+                }
+
+                function updatePos() {
+                    trackEl.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
+                    rafId = null;
+                }
+
+                function onStart(x) {
+                    if (!isMobile()) return;
+                    startX = x;
+                    dragDelta = 0;
+                    isDragging = true;
+                    trackEl.classList.add('dragging');
+                }
+
+                function onMove(x) {
+                    if (!isDragging || !isMobile()) return;
+                    dragDelta = x - startX;
+                    if (rafId === null) rafId = requestAnimationFrame(updatePos);
+                }
+
+                function onEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    trackEl.classList.remove('dragging');
+                    if (isMobile()) {
+                        if (dragDelta < -50) goTo(current + 1);
+                        else if (dragDelta > 50) goTo(current - 1);
+                        else goTo(current);
+                    }
+                    dragDelta = 0;
+                }
+
+                trackEl.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
+                trackEl.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
+                window.addEventListener('touchend', onEnd, { passive: true });
+                window.addEventListener('touchcancel', onEnd, { passive: true });
+
+                trackEl.addEventListener('mousedown', e => { e.preventDefault(); onStart(e.clientX); });
+                window.addEventListener('mousemove', e => onMove(e.clientX));
+                window.addEventListener('mouseup', onEnd);
+
+                document.querySelectorAll(dotsSelector).forEach((d, i) =>
+                    d.addEventListener('click', () => goTo(i)));
+                if (opts && opts.prevId) document.getElementById(opts.prevId)?.addEventListener('click', () => goTo(current - 1));
+                if (opts && opts.nextId) document.getElementById(opts.nextId)?.addEventListener('click', () => goTo(current + 1));
+            }
+
             // Works Carousel
             (function() {
                 const track = document.getElementById('worksTrack');
@@ -991,80 +1056,12 @@ app.get('/', async (c) => {
                 const slides = track.querySelectorAll('.works-card-slide');
                 const total = slides.length;
                 if (total <= 1) return;
-                let current = 0;
-                let startX = 0;
-                let dragDelta = 0;
-                let isDragging = false;
-                let rafId = null;
-
-                // ドット生成
                 slides.forEach((_, i) => {
                     const d = document.createElement('span');
                     d.className = 'works-dot' + (i === 0 ? ' active' : '');
-                    d.dataset.index = String(i);
-                    d.addEventListener('click', () => goTo(i));
                     dotsWrap.appendChild(d);
                 });
-
-                function isMobile() { return window.innerWidth < 768; }
-
-                function goTo(index) {
-                    if (!isMobile()) return;
-                    current = (index + total) % total;
-                    track.style.transform = 'translateX(-' + (current * 100) + '%)';
-                    dotsWrap.querySelectorAll('.works-dot').forEach((d, i) => d.classList.toggle('active', i === current));
-                }
-
-                function updateDragPosition() {
-                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
-                    rafId = null;
-                }
-
-                function queueDragUpdate() {
-                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
-                }
-
-                track.addEventListener('touchstart', e => {
-                    if (!isMobile()) return;
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                }, { passive: true });
-                track.addEventListener('touchmove', e => {
-                    if (!isMobile() || !isDragging) return;
-                    dragDelta = e.touches[0].clientX - startX;
-                    queueDragUpdate();
-                }, { passive: true });
-                track.addEventListener('touchend', () => {
-                    if (!isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
-
-                track.addEventListener('mousedown', e => {
-                    if (!isMobile()) return;
-                    startX = e.clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                });
-                window.addEventListener('mousemove', e => {
-                    if (!isDragging || !isMobile()) return;
-                    dragDelta = e.clientX - startX;
-                    queueDragUpdate();
-                });
-                window.addEventListener('mouseup', () => {
-                    if (!isDragging || !isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
+                makeCarousel(track, '#worksDots .works-dot', total);
             })();
 
             // Tag filter
@@ -1094,163 +1091,20 @@ app.get('/', async (c) => {
             })();
 
             // Service Carousel
-            (function() {
-                const track = document.getElementById('serviceTrack');
-                const dots = document.querySelectorAll('#serviceDots .service-dot');
-                const total = 4;
-                let current = 0;
-                let startX = 0;
-                let dragDelta = 0;
-                let isDragging = false;
-                let rafId = null;
-                const slideWidth = 100;
-
-                function isMobile() {
-                    return window.innerWidth < 768;
-                }
-
-                function goTo(index) {
-                    if (!isMobile()) return;
-                    current = (index + total) % total;
-                    track.style.transform = 'translateX(-' + (current * slideWidth) + '%)';
-                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-                }
-
-                function updateDragPosition() {
-                    track.style.transform = 'translateX(calc(-' + (current * slideWidth) + '% + ' + dragDelta + 'px))';
-                    rafId = null;
-                }
-
-                function queueDragUpdate() {
-                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
-                }
-
-                document.getElementById('servicePrev').addEventListener('click', () => goTo(current - 1));
-                document.getElementById('serviceNext').addEventListener('click', () => goTo(current + 1));
-                dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
-
-                track.addEventListener('touchstart', e => {
-                    if (!isMobile()) return;
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                }, { passive: true });
-                track.addEventListener('touchmove', e => {
-                    if (!isMobile() || !isDragging) return;
-                    dragDelta = e.touches[0].clientX - startX;
-                    queueDragUpdate();
-                }, { passive: true });
-                track.addEventListener('touchend', () => {
-                    if (!isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
-
-                track.addEventListener('mousedown', e => {
-                    if (!isMobile()) return;
-                    startX = e.clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                });
-                window.addEventListener('mousemove', e => {
-                    if (!isDragging || !isMobile()) return;
-                    dragDelta = e.clientX - startX;
-                    queueDragUpdate();
-                });
-                window.addEventListener('mouseup', () => {
-                    if (!isDragging || !isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
-            })();
+            makeCarousel(
+                document.getElementById('serviceTrack'),
+                '#serviceDots .service-dot',
+                4,
+                { prevId: 'servicePrev', nextId: 'serviceNext' }
+            );
 
             // Reasons Carousel
-            (function() {
-                const track = document.getElementById('reasonsTrack');
-                const dots = document.querySelectorAll('#reasonsDots .reasons-dot');
-                const total = 3;
-                let current = 0;
-                let startX = 0;
-                let dragDelta = 0;
-                let isDragging = false;
-                let rafId = null;
-
-                function isMobile() {
-                    return window.innerWidth < 768;
-                }
-
-                function goTo(index) {
-                    if (!isMobile()) return;
-                    current = (index + total) % total;
-                    track.style.transform = 'translateX(-' + (current * 100) + '%)';
-                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-                }
-
-                function updateDragPosition() {
-                    track.style.transform = 'translateX(calc(-' + (current * 100) + '% + ' + dragDelta + 'px))';
-                    rafId = null;
-                }
-
-                function queueDragUpdate() {
-                    if (rafId === null) rafId = requestAnimationFrame(updateDragPosition);
-                }
-
-                document.getElementById('reasonsPrev').addEventListener('click', () => goTo(current - 1));
-                document.getElementById('reasonsNext').addEventListener('click', () => goTo(current + 1));
-                dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
-
-                // Touch
-                track.addEventListener('touchstart', e => {
-                    if (!isMobile()) return;
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                }, { passive: true });
-                track.addEventListener('touchmove', e => {
-                    if (!isMobile() || !isDragging) return;
-                    dragDelta = e.touches[0].clientX - startX;
-                    queueDragUpdate();
-                }, { passive: true });
-                track.addEventListener('touchend', () => {
-                    if (!isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
-
-                // Mouse drag
-                track.addEventListener('mousedown', e => {
-                    if (!isMobile()) return;
-                    startX = e.clientX;
-                    isDragging = true;
-                    track.classList.add('dragging');
-                });
-                window.addEventListener('mousemove', e => {
-                    if (!isDragging || !isMobile()) return;
-                    dragDelta = e.clientX - startX;
-                    queueDragUpdate();
-                });
-                window.addEventListener('mouseup', () => {
-                    if (!isDragging || !isMobile()) return;
-                    isDragging = false;
-                    track.classList.remove('dragging');
-                    if (dragDelta < -50) goTo(current + 1);
-                    else if (dragDelta > 50) goTo(current - 1);
-                    else goTo(current);
-                    dragDelta = 0;
-                });
-            })();
+            makeCarousel(
+                document.getElementById('reasonsTrack'),
+                '#reasonsDots .reasons-dot',
+                3,
+                { prevId: 'reasonsPrev', nextId: 'reasonsNext' }
+            );
 
             // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
