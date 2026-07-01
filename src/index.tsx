@@ -634,9 +634,9 @@ app.get('/', async (c) => {
                         <div class="hero-text">
                             <p class="font-poppins text-primary font-semibold text-sm tracking-widest mb-4">WEB DEVELOPMENT</p>
                             <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-white">
-                                はじめてのECも<br>
-                                本格リニューアルも<br>
-                                <span class="text-primary">技術で支える<br>あなたの挑戦</span>
+                                採用コストを下げたい。<br>
+                                新規顧客を増やしたい。<br>
+                                <span class="text-primary">そのためのWebを<br>作ります。</span>
                             </h1>
                             <p class="text-gray-200 mb-8 text-lg leading-relaxed">
                                 お客様のビジネスに最適化されたWebサイトを、<br class="hidden md:block">
